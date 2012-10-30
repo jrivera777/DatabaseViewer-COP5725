@@ -1,0 +1,21 @@
+/* 
+    Document   : style
+    Created on : Oct 17, 2012, 10:18:20 PM
+    Author     : Joseph
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+body
+{
+    background-color: #E1DCD2;
+}
+

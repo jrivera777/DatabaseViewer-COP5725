@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <servlet>
+        <servlet-name>UserLogin</servlet-name>
+        <servlet-class>UserInterface.UserLogin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>someservlet</servlet-name>
+        <servlet-class>UserInterface.someservlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DBInfo</servlet-name>
+        <servlet-class>UserInterface.DBInfo</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserLogin</servlet-name>
+        <url-pattern>/UserLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>someservlet</servlet-name>
+        <url-pattern>/someservlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DBInfo</servlet-name>
+        <url-pattern>/DBInfo</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>

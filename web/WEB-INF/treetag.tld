@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+    <tlibversion>2.0</tlibversion>
+    <jspversion>1.2</jspversion>
+    <shortname>Prize Tags - JSP Tree Tag</shortname>
+    <uri>urn:www.jenkov.com/projects/prizetags</uri>
+
+    <!-- These tags are for the Tree Tag -->
+    <tag>
+        <name>tree</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.TreeTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>tree</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>scope</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>paramPrefix</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>expandParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>expandAllParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>collapseParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>collapseAllParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>selectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>selectOnlyParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>unselectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+
+        <attribute>
+            <name>includeRootNode</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>nodeId</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeIdTag</tagclass>
+        <bodycontent>empty</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>nodeName</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeNameTag</tagclass>
+        <bodycontent>empty</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>nodeType</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeTypeTag</tagclass>
+        <bodycontent>empty</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>nodeToolTip</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeToolTipTag</tagclass>
+        <bodycontent>empty</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>nodeImageUrl</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeImageUrlTag</tagclass>
+        <bodycontent>empty</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>nodeIndent</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeIndentTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>indentationType</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+    <tag>
+        <name>nodeIndentVerticalLine</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeIndentVerticalLineTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>indentationType</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>nodeIndentBlankSpace</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeIndentBlankSpaceTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>indentationType</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>nodeMatch</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeMatchTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>expanded</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>selected</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>hasChildren</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>isFirstChild</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>isLastChild</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>matcherClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>matcherName</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>nodeNoMatch</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.NodeNoMatchTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>expanded</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>selected</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>hasChildren</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>isFirstChild</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>isLastChild</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>matcherClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>matcherName</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+    <tag>
+        <name>detachNodeObject</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.DetachNodeObjectTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>node</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>detachedObject</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+
+
+    <tag>
+        <name>onExpand</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.OnExpandTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>expandParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>expandedNode</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.ExpandedNodeTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>tree</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>expandParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>expandedNode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>expandedNodeId</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.ExpandedNodeIdTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>expandParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+
+    <tag>
+        <name>onCollapse</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.OnCollapseTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>collapseParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>collapsedNode</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.CollapsedNodeTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>tree</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>collapseParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>collapsedNode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>collapsedNodeId</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.CollapsedNodeIdTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>collapseParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+    <tag>
+        <name>onSelect</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.OnSelectTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>selectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>selectedNode</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.SelectedNodeTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>tree</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>selectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>selectedNode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>selectedNodeId</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.SelectedNodeIdTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>selectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+    <tag>
+        <name>onUnselect</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.OnUnselectTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>unselectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>unselectedNode</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.UnselectedNodeTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>tree</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>unselectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>unselectedNode</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>unselectedNodeId</name>
+        <tagclass>com.jenkov.prizetags.tree.impl.UnselectedNodeIdTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+
+        <attribute>
+            <name>unselectParam</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+</taglib>
