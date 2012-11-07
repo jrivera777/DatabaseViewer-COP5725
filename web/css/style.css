@@ -5,10 +5,15 @@ body
 {
     background-color: #E1DCD2;
 }
-
 #query-input
 {
     width: 100%;
     margin-top: 5px;
     margin-bottom: 5px;
+}
+.table-container
+{
+    overflow: auto;
+    width: 100%;
+    max-height:460px;
 }

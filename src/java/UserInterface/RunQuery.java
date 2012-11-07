@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RunQuery extends HttpServlet
 {
+    protected final String ERROR_MESSAGE = "<div class=\"alert alert-error\">"
+            + "<button type=\"button\" class=\"close\" "
+            + "data-dismiss=\"alert\">×</button>%s</div>";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
@@ -75,19 +78,19 @@ public class RunQuery extends HttpServlet
             catch(SQLException ex)
             {
                 System.out.println(ex.getMessage());
-                out.println("<div class=\"alert alert-error\">" + ex.getMessage() + "</div>");
+                out.printf(ERROR_MESSAGE, ex.getMessage());
                 ex.printStackTrace();
             }
             catch(ClassNotFoundException ex)
             {
                 System.out.println(ex.getMessage());
-                out.println("<div class=\"alert alert-error\">" + ex.getMessage() + "</div>");
+                out.printf(ERROR_MESSAGE, ex.getMessage());
                 ex.printStackTrace();;
             }
             catch(Exception ex)
             {
                 System.out.println(ex.getMessage());
-                out.println("<div class=\"alert alert-error\">" + ex.getMessage() + "</div>");
+                out.printf(ERROR_MESSAGE, ex.getMessage());
                 ex.printStackTrace();
             }
             finally
