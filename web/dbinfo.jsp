@@ -16,7 +16,6 @@
         <script src="js/bootstrap.js"></script>
         <script src="js/tree.jquery.js"></script>
         <title>Database Information</title>
-
         <script>
             $(document).ready(function(){
                 $('#body').tree();

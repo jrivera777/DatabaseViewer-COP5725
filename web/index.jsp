@@ -14,10 +14,7 @@
         <link href="css/style.css" type="text/css" rel="stylesheet"></link>
         <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
         <script src="js/bootstrap.js"></script>
-<!--        <script src="js/dbScripts.js"></script>-->
         <title>COP5725 Database Viewer</title>
-
-       
     </head>
     <body>
         <div class="container-fluid">
@@ -50,17 +47,12 @@
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <!--     <label class="checkbox">
-                                         <input type="checkbox"> Remember me
-                                         </label>-->
                                 <button id="login" type="submit" class="btn btn-primary">Log in</button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <!--                <button id="login" class="btn btn-primary">press here</button>-->
             </div>
-            
         </div>
     </body>
 </html> 

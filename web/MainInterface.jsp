@@ -17,7 +17,7 @@
         <script src="js/bootstrap.js"></script>
         <script src="js/tree.jquery.js"></script>
     </head>
-    <frameset cols="25%, *">
+    <frameset cols="17%, *">
         <frame src="dbinfo.jsp" />
         <frame src="InterfaceOptions.jsp" />
     </frameset>

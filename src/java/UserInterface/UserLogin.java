@@ -17,13 +17,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class UserLogin extends HttpServlet
 {
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
@@ -41,8 +34,6 @@ public class UserLogin extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        // processRequest(request, response);
-
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try
@@ -87,5 +78,5 @@ public class UserLogin extends HttpServlet
     public String getServletInfo()
     {
         return "Short description";
-    }// </editor-fold>
+    }
 }

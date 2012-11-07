@@ -5,24 +5,24 @@
         <servlet-class>UserInterface.UserLogin</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>someservlet</servlet-name>
-        <servlet-class>UserInterface.someservlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>DBInfo</servlet-name>
         <servlet-class>UserInterface.DBInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RunQuery</servlet-name>
+        <servlet-class>UserInterface.RunQuery</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserLogin</servlet-name>
         <url-pattern>/UserLogin</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>someservlet</servlet-name>
-        <url-pattern>/someservlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>DBInfo</servlet-name>
         <url-pattern>/DBInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RunQuery</servlet-name>
+        <url-pattern>/RunQuery</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

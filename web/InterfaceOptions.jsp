@@ -12,17 +12,51 @@
         <link href="css/bootstrap.css" type="text/css" rel="stylesheet"></link>
         <link href="css/style.css" type="text/css" rel="stylesheet"></link>
         <link href="css/jqtree.css" type="text/css" rel="stylesheet"></link>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+        <!--        <link href="css/ext-all.css" type="text/css" rel="stylesheet"></link>-->
         <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
         <script src="js/bootstrap.js"></script>
+        <script src="js/ext-all.js"></script>
         <script src="js/tree.jquery.js"></script>
-
+        <!--        <script src="js/dbScripts.js"></script>-->
         <script>
+            $(function() {
+                $( "#tabs" ).tabs();
+            });
+        </script>
+        <script>
+            $("document").ready(function() {
+                $('#execute').click(function() {
+                    var exec = $('#query-input').val();
+                    $.ajax({
+                        url:"RunQuery",
+                        data: {query: exec},
+                        success: function(data){
+                            $('#results').empty();
+                            $('#results').append(data);
+                        }
+                    });
+                });
+            });
         </script>
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div id="" class="span12"></div>
+        <!-- container for the existing markup tabs -->
+        <div id="tabs">
+            <ul>
+                <li><a href="#construct">Construct Cubes</a></li>
+                <li><a href="#explore">Explore Cubes</a></li>
+            </ul>
+            <div id="construct">
+                <div class="controls">
+                    <button id="execute" type="submit" class="btn btn-primary">Execute Query</button>
+                    <textarea name="query" id="query-input"rows="6"></textarea>
+                </div>
+                <div id="results">
+                </div>
+            </div>
+            <div id="explore">
             </div>
         </div>
     </body>
