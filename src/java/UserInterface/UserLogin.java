@@ -56,9 +56,11 @@ public class UserLogin extends HttpServlet
             catch(SQLException ex)
             {
                 System.out.println(ex.getMessage());
-                out.printf(ERROR_MESSAGE, ex.getMessage());
                 ex.printStackTrace();
-                response.sendRedirect("Error.jsp");
+                request.setAttribute("errorMessage", String.format(ERROR_MESSAGE, ex.getMessage()));
+                request.getRequestDispatcher("Error.jsp").forward(request, response);
+
+                //response.sendRedirect("Error.jsp");
                 return;
             }
             catch(ClassNotFoundException ex)

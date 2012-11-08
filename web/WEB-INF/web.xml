@@ -12,6 +12,10 @@
         <servlet-name>RunQuery</servlet-name>
         <servlet-class>UserInterface.RunQuery</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserLogout</servlet-name>
+        <servlet-class>UserInterface.UserLogout</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLogin</servlet-name>
         <url-pattern>/UserLogin</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>RunQuery</servlet-name>
         <url-pattern>/RunQuery</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserLogout</servlet-name>
+        <url-pattern>/UserLogout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

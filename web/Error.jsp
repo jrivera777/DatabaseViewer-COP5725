@@ -16,6 +16,7 @@
         <title>Oops!</title>
     </head>
     <body>
+
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span10 offset1 well">
@@ -23,6 +24,10 @@
                         <a href="index.jsp">Click Here</a> to go back to the Login Page.
                     </p>
                     <div id="results">
+                        <%
+                            String err = (String) request.getAttribute("errorMessage");
+                           out.println(err);
+                        %>
                     </div>
                 </div>
             </div>

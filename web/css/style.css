@@ -11,6 +11,15 @@ body
     margin-top: 5px;
     margin-bottom: 5px;
 }
+.center-text
+{
+    text-align: center;
+}
+.logout
+{
+    text-align: right;
+    margin: 2px;
+}
 .table-container
 {
     overflow: auto;

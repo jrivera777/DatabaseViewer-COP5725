@@ -25,6 +25,8 @@
         <script>
             $("document").ready(function() {
                 $('#execute').click(function() {
+                    var btn = $(this)
+                    btn.button('loading')
                     var exec = $('#query-input').val();
                     $.ajax({
                         url:"RunQuery",
@@ -32,14 +34,25 @@
                         success: function(data){
                             $('#results').empty();
                             $('#results').append(data);
+                            btn.button('reset')
                         }
                     });
+                });
+            });
+        </script>
+        <script>
+            $("document").ready(function(){
+                $('#clearResults').click(function(){
+                    $('#results').empty();
                 });
             });
         </script>
     </head>
     <body>
         <!-- container for the existing markup tabs -->
+        <form method="get" action="UserLogout" target="_top">
+            <p class="logout"><button class="btn btn-small btn-info" type="submit"><i class="icon-off icon-white"></i> Log Out</button></p>
+        </form>
         <div id="tabs">
             <ul>
                 <li><a href="#construct">Construct Cubes</a></li>
@@ -47,7 +60,8 @@
             </ul>
             <div id="construct">
                 <div class="controls">
-                    <button id="execute" type="submit" class="btn btn-primary">Execute Query</button>
+                    <button id="execute" type="button" class="btn btn-primary" data-loading-text="Executing...">Execute Query</button>
+                    <button id="clearResults" type="submit" class="btn">Clear Results</button>
                     <textarea name="query" id="query-input"rows="6"></textarea>
                 </div>
                 <div id="results" class="table-container">

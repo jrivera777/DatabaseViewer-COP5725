@@ -19,7 +19,13 @@
     <body>
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span8 offset2 well">
+                <div class="span8 offset2">
+                    <h1 class="center-text">COP5725 Database Viewer</h1>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span8 offset2 well well-small">
+                    <h3 class="center-text">Data Source</h3>
                     <form class="form-horizontal" method="get" action="UserLogin">
                         <div class="control-group">
                             <label class="control-label" for="dbName">Database Name</label>
