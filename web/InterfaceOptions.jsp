@@ -50,24 +50,48 @@
     </head>
     <body>
         <!-- container for the existing markup tabs -->
-        <form method="get" action="UserLogout" target="_top">
-            <p class="logout"><button class="btn btn-small btn-info" type="submit"><i class="icon-off icon-white"></i> Log Out</button></p>
-        </form>
-        <div id="tabs">
-            <ul>
-                <li><a href="#construct">Construct Cubes</a></li>
-                <li><a href="#explore">Explore Cubes</a></li>
-            </ul>
-            <div id="construct">
-                <div class="controls">
-                    <button id="execute" type="button" class="btn btn-primary" data-loading-text="Executing...">Execute Query</button>
-                    <button id="clearResults" type="submit" class="btn">Clear Results</button>
-                    <textarea name="query" id="query-input"rows="6"></textarea>
+        <div class="row-fluid">
+            <div class="span12">
+                <form method="get" action="UserLogout" target="_top">
+                    <p class="logout"><button class="btn btn-small btn-info" type="submit"><i class="icon-off icon-white"></i> Log Out</button></p>
+                </form>
+                <div id="tabs">
+                    <ul>
+                        <li><a href="#construct">Construct Cubes</a></li>
+                        <li><a href="#explore">Explore Cubes</a></li>
+                    </ul>
+                    <div id="construct">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <button id="execute" type="button" class="btn btn-primary" data-loading-text="Executing...">Execute Query</button>
+                                <button id="clearResults" type="submit" class="btn">Clear Results</button>
+                                <textarea name="query" id="query-input" class="boxsizingBorder" rows="6" style="resize: none;"></textarea>
+                                <div id="results" class="table-container">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12 form-inline center-text well well-small">
+                                <label class="control-label" for="cubeName">Cube Name:</label>
+                                <input id="cubeName" class="input-xxlarge" type="text" placeholder="New Cube"></input>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4 form-inline well">
+                                <label class="control-label" for="dimensionName">Dimension Name:</label>
+                                <input id="cubeName" class="input-medium" type="text" placeholder="Dimension_1"></input>
+                            </div>
+                            <div class="span4 form-inline well">
+
+                            </div>
+                            <div class="span4 form-inline well">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="explore">
+                    </div>
                 </div>
-                <div id="results" class="table-container">
-                </div>
-            </div>
-            <div id="explore">
             </div>
         </div>
     </body>

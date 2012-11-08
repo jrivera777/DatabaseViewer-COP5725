@@ -7,9 +7,15 @@ body
 }
 #query-input
 {
-    width: 100%;
+    width: inherit;
+    display: block;
     margin-top: 5px;
-    margin-bottom: 5px;
+}
+.boxsizingBorder
+{
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 .center-text
 {
