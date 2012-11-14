@@ -49,7 +49,7 @@ public class UserLogin extends HttpServlet
                         + dbAddr + "/" + dbName + "?user=" + dbUser
                         + "&password=" + dbPW;
 
-                System.out.println("Loaded driver.");
+                System.out.println("Login Loaded driver.");
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(userConnect);
             }

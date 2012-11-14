@@ -44,11 +44,8 @@ public class DBInfo extends HttpServlet
                         + dbAddr + "/" + dbName + "?user=" + dbUser
                         + "&password=" + dbPW;
 
-                System.out.println("Loaded driver.");
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(userConnect);
-
-                System.out.println("Made connection.");
 
                 java.sql.PreparedStatement statement = conn.prepareStatement(
                         "select table_name, table_type from information_schema.tables "
@@ -81,7 +78,6 @@ public class DBInfo extends HttpServlet
                 dbRoot.addChild(viewsRoot);
                 tree.add(dbRoot);
                 String json = new Gson().toJson(tree);
-                System.out.println(json);
                 out.write(json);
             }
             catch(SQLException ex)

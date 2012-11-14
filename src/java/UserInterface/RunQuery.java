@@ -45,7 +45,7 @@ public class RunQuery extends HttpServlet
                         + dbAddr + "/" + dbName + "?user=" + dbUser
                         + "&password=" + dbPW;
 
-                System.out.println("Loaded driver.");
+                System.out.println("LOADED DRIVER.");
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(userConnect);
 
@@ -55,7 +55,7 @@ public class RunQuery extends HttpServlet
                 ResultSet rs = statement.executeQuery();
 
                 StringBuilder sb = new StringBuilder();
-                sb.append("<table class=\"table table-striped table-hover table-bordered\">");
+                sb.append("<table id=\"rsTbl\" class=\"table table-striped table-hover table-bordered\">");
                 java.sql.ResultSetMetaData rsMeta = rs.getMetaData();
                 sb.append(this.getTableHeader(rsMeta));
                 sb.append("<tbody>");

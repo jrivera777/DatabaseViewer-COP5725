@@ -17,36 +17,8 @@
         <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
         <script src="js/bootstrap.js"></script>
         <script src="js/tree.jquery.js"></script>
-        <script>
-            $(function() {
-                $( "#tabs" ).tabs();
-            });
-        </script>
-        <script>
-            $("document").ready(function() {
-                $('#execute').click(function() {
-                    var btn = $(this)
-                    btn.button('loading')
-                    var exec = $('#query-input').val();
-                    $.ajax({
-                        url:"RunQuery",
-                        data: {query: exec},
-                        success: function(data){
-                            $('#results').empty();
-                            $('#results').append(data);
-                            btn.button('reset')
-                        }
-                    });
-                });
-            });
-        </script>
-        <script>
-            $("document").ready(function(){
-                $('#clearResults').click(function(){
-                    $('#results').empty();
-                });
-            });
-        </script>
+        <script src="js/mInterface.js"></script>
+        
     </head>
     <body>
         <!-- container for the existing markup tabs -->
@@ -63,9 +35,15 @@
                     <div id="construct">
                         <div class="row-fluid">
                             <div class="span12">
-                                <button id="execute" type="button" class="btn btn-primary" data-loading-text="Executing...">Execute Query</button>
-                                <button id="clearResults" type="submit" class="btn">Clear Results</button>
-                                <textarea name="query" id="query-input" class="boxsizingBorder" rows="6" style="resize: none;"></textarea>
+                                <div class="form-inline">
+                                    <button id="execute" type="button" class="btn btn-primary" data-loading-text="Executing...">Execute Query</button>
+                                    <button id="clearResults" type="submit" class="btn">Clear Results</button>
+                                    <label class="checkbox">
+                                        <input id="forCube" type="checkbox" value="">
+                                        For Cube
+                                    </label>
+                                </div>
+                                <textarea name="query" id="query-input" class="boxsizingBorder" rows="6"></textarea>
                                 <div id="results" class="table-container">
                                 </div>
                             </div>
@@ -73,16 +51,27 @@
                         <div class="row-fluid">
                             <div class="span12 form-inline center-text well well-small">
                                 <label class="control-label" for="cubeName">Cube Name:</label>
-                                <input id="cubeName" class="input-xxlarge" type="text" placeholder="New Cube"></input>
+                                <input id="cubeName" type="text" placeholder="Cube_1"></input>
                             </div>
                         </div>
                         <div class="row-fluid">
                             <div class="span4 form-inline well">
-                                <label class="control-label" for="dimensionName">Dimension Name:</label>
-                                <input id="cubeName" class="input-medium" type="text" placeholder="Dimension_1"></input>
+                                <div class="control-group">
+                                    <input id="cubeName" type="text" placeholder="Dimension_1">
+                                    <button id="createDime" class="btn" type="submit">Create Dimension</button>
+                                </div>
+                                <div class="control-group">
+                                    <select id="dimensions" multiple="multiple"></select>
+                                </div>
                             </div>
                             <div class="span4 form-inline well">
-
+                                <div class="control-group">
+                                    <label class="control-label" for="tableSelect">Select Table:</label>
+                                    <select id="tableSelect"></select>
+                                </div>
+                                <div class="control-group">
+                                    <select id="dimensions" multiple="multiple"></select>
+                                </div>
                             </div>
                             <div class="span4 form-inline well">
 

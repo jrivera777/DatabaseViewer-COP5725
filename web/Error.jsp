@@ -19,6 +19,11 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
+                <div class="span8 offset2">
+                    <h1 class="center-text">COP5725 Database Viewer</h1>
+                </div>
+            </div>
+            <div class="row-fluid">
                 <div class="span10 offset1 well">
                     <p>Sorry for the inconvenience, but something has gone wrong.
                         <a href="index.jsp">Click Here</a> to go back to the Login Page.
