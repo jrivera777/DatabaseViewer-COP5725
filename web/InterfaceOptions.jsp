@@ -18,7 +18,6 @@
         <script src="js/bootstrap.js"></script>
         <script src="js/tree.jquery.js"></script>
         <script src="js/mInterface.js"></script>
-        
     </head>
     <body>
         <!-- container for the existing markup tabs -->
