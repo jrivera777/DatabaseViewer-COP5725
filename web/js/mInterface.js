@@ -65,6 +65,9 @@ $("document").ready(function() {
 //create dimension button
 $("document").ready(function() {
     $('#createDime').click(function() {
+        $('#dimensions').find("option").attr("selected", false);
+        disableSelection(true);
+
         var btn = $(this)
         btn.button('loading')
         var name = $('#dimeName').val();
@@ -73,7 +76,6 @@ $("document").ready(function() {
             if (this.value == name)
             {
                 exists = true;
-                $()
                 return false;
             }
         });
@@ -81,11 +83,18 @@ $("document").ready(function() {
         {
             $('#dimensions').append("<option>" + name + "</option>")
             $('#dimeName').val('');
+            $('#dimension_add_cntrls').removeClass('error')
         }
+        else
+            $('#dimension_add_cntrls').addClass('error')
         btn.button('reset');
     });
 });
-
+$("document").ready(function() {
+    $('input').focus(function() {
+        $('#dimension_add_cntrls').removeClass('error')
+    });
+});
 //Table selection and column loading
 $("document").ready(function(){
     $('#tableSelect').change(function(){
@@ -111,3 +120,28 @@ $("document").ready(function(){
         }
     });
 });
+
+//dimension selection
+$("document").ready(function() {
+    $('#dimensions').change(function(){
+        var selected = $(this).val();
+        if(selected !== null)
+            disableSelection(false);
+        else
+            disableSelection(true);
+    });
+});
+
+function disableSelection(val)
+{
+    if (val)
+    {
+        $('#tableSelect').attr('disabled', 'disabled');
+        $('#columns').attr('disabled', 'disabled');
+    }
+    else
+    {
+        $('#tableSelect').removeAttr('disabled');
+        $('#columns').removeAttr('disabled');
+    }
+}
