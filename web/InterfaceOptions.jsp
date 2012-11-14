@@ -37,10 +37,6 @@
                                 <div class="form-inline">
                                     <button id="execute" type="button" class="btn btn-primary" data-loading-text="Executing...">Execute Query</button>
                                     <button id="clearResults" type="submit" class="btn">Clear Results</button>
-                                    <label class="checkbox">
-                                        <input id="forCube" type="checkbox" value="">
-                                        For Cube
-                                    </label>
                                 </div>
                                 <textarea name="query" id="query-input" class="boxsizingBorder" rows="6"></textarea>
                                 <div id="results" class="table-container">
@@ -56,8 +52,8 @@
                         <div class="row-fluid">
                             <div class="span4 form-inline well">
                                 <div class="control-group">
-                                    <input id="cubeName" type="text" placeholder="Dimension_1">
-                                    <button id="createDime" class="btn" type="submit">Create Dimension</button>
+                                    <input id="dimeName" type="text" placeholder="Dimension_1">
+                                    <button id="createDime" class="btn" type="button" data-loading-text="Adding...">Create Dimension</button>
                                 </div>
                                 <div class="control-group">
                                     <select id="dimensions" multiple="multiple"></select>
@@ -66,10 +62,10 @@
                             <div class="span4 form-inline well">
                                 <div class="control-group">
                                     <label class="control-label" for="tableSelect">Select Table:</label>
-                                    <select id="tableSelect"></select>
+                                    <select disabled="disabled" id="tableSelect"></select>
                                 </div>
                                 <div class="control-group">
-                                    <select id="dimensions" multiple="multiple"></select>
+                                    <select disabled="disabled" id="columns" multiple="multiple"></select>
                                 </div>
                             </div>
                             <div class="span4 form-inline well">

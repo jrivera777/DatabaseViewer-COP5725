@@ -18,7 +18,7 @@
         <title>Database Information</title>
         <script>
             $(document).ready(function(){
-                $('#body').tree();
+                $('#body').tree()
             });
         </script>
     </head>

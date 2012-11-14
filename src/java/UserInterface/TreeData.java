@@ -7,13 +7,15 @@ public class TreeData
 {
    // private static int ID_COUNT = 1;
     private String label;
-    //private int id;
+    private String dataName;
+    private String type;
     private ArrayList<TreeData> children;
 
-    public TreeData(String lbl)
+    public TreeData(String nm, String ty)
     {
-        //id = ID_COUNT++;
-        this.label = lbl;
+        this.type = ty;
+        this.dataName = nm;
+        this.label = ty.equals("") || ty == null ? nm : nm + ": " + type;
         children = null;
     }
 
@@ -23,16 +25,6 @@ public class TreeData
             children = new ArrayList<TreeData>();
 
         children.add(td);
-    }
-
-
-    public static void main(String[] args)
-    {
-        TreeData root = new TreeData("Saurischia");
-        TreeData child = new TreeData("Herrerasaurians");
-        root.addChild(child);
-        String json = new Gson().toJson(root);
-        System.out.println(json);
     }
 
     public ArrayList<TreeData> getChildren()
@@ -45,16 +37,6 @@ public class TreeData
         this.children = children;
     }
 
-//    public int getId()
-//    {
-//        return id;
-//    }
-//
-//    public void setId(int id)
-//    {
-//        this.id = id;
-//    }
-
     public String getLabel()
     {
         return label;
@@ -63,5 +45,15 @@ public class TreeData
     public void setLabel(String label)
     {
         this.label = label;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
     }
 }

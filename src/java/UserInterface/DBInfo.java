@@ -56,14 +56,14 @@ public class DBInfo extends HttpServlet
 
                 int count = 0;
                 List<TreeData> tree = new ArrayList<TreeData>();
-                TreeData tablesRoot = new TreeData("Tables");
-                TreeData viewsRoot = new TreeData("Views");
+                TreeData tablesRoot = new TreeData("Tables", "");
+                TreeData viewsRoot = new TreeData("Views", "");
                 while(rs.next())
                 {
                     String tableName = rs.getString(1);
                     String type = rs.getString(2);
 
-                    TreeData child = new TreeData(tableName);
+                    TreeData child = new TreeData(tableName, "");
                     if(DBTable.getTableType(type) == DBTable.TableType.TABLE)
                         tablesRoot.addChild(child);
                     else if(DBTable.getTableType(type) == DBTable.TableType.VIEW)
@@ -73,7 +73,7 @@ public class DBInfo extends HttpServlet
                 loadData(tablesRoot, conn);
                 loadData(viewsRoot, conn);
 
-                TreeData dbRoot = new TreeData("Data Source - " + dbName);
+                TreeData dbRoot = new TreeData("Data Source - " + dbName, "");
                 dbRoot.addChild(tablesRoot);
                 dbRoot.addChild(viewsRoot);
                 tree.add(dbRoot);
@@ -173,7 +173,7 @@ public class DBInfo extends HttpServlet
                 String colName = cols.getString(1);
                 String dType = cols.getString(2);
 
-                TreeData col = new TreeData(colName + ": " + dType);
+                TreeData col = new TreeData(colName, dType);
                 td.addChild(col);
             }
         }
