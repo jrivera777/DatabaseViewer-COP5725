@@ -50,26 +50,36 @@
                             </div>
                         </div>
                         <div class="row-fluid">
-                            <div class="span4 form-inline well">
-                                <div id ="dimension_add_cntrls" class="control-group">
-                                    <input id="dimeName" type="text" placeholder="Dimension_1">
-                                    <button id="createDime" class="btn" type="button" data-loading-text="Adding...">Create Dimension</button>
+                            <div class="span12 well well-small">
+                                <div class="row-fluid">
+                                    <div class="span4 form-horizontal">
+                                        <div id ="dimension_add_cntrls" class="control-group">
+                                            <input id="dimeName" type="text" placeholder="Dimension_1">
+                                            <button id="createDime" class="btn" type="button" data-loading-text="Adding...">Create Dimension</button>
+                                        </div>
+                                        <div class="control-group">
+                                            <select size="4" id="dimensions"></select>
+                                        </div>
+                                    </div>
+                                    <div class="span4 form-horizontal">
+                                        <div id="tbl_select_cntrls" class="control-group">
+                                            <label>Select Table:</label>
+                                            <select disabled="disabled" id="tableSelect"></select>
+                                        </div>
+                                        <div class="control-group">
+                                            <select size="4" disabled="disabled" id="columns"></select>
+                                            <button id="addColumn" disabled="disabled" class="btn btn-small" type="button"><i id="col-arr" class="icon-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="span4 form-horizontal">
+                                        <form>
+                                            <div id="tbl_select_cntrls" class="control-group">
+                                                <label class="control-label" for="granularity">Granularity:</label>
+                                                <select size="4" id="granularity"></select>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="control-group">
-                                    <select size="4" id="dimensions"></select>
-                                </div>
-                            </div>
-                            <div class="span4 form-inline well">
-                                <div id="tbl_select_cntrls" class="control-group">
-                                    <label class="control-label" for="tableSelect">Select Table:</label>
-                                    <select disabled="disabled" id="tableSelect"></select>
-                                </div>
-                                <div class="control-group">
-                                    <select size="4" disabled="disabled" id="columns"></select>
-                                </div>
-                            </div>
-                            <div class="span4 form-inline well">
-
                             </div>
                         </div>
                     </div>

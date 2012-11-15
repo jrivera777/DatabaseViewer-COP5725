@@ -1,5 +1,6 @@
 //object holds table data
 var dbData;
+var dimensions = [];
 //setup tabs
 $("document").ready(function() {
     $(function() {
@@ -30,7 +31,7 @@ $("document").ready(function(){
     });
 });
 
-//exectue query button
+//execute query button
 $("document").ready(function() {
     $('#execute').click(function() {
         var btn = $(this)
@@ -53,8 +54,8 @@ $("document").ready(function() {
                 btn.button('reset');
                 btn.removeClass('btn-primary');
                 btn.addClass(succ).delay(2000).queue(function(next){
-                    $(this).removeClass(succ)
-                    $(this).addClass('btn-primary');
+                    btn.removeClass(succ)
+                    btn.addClass('btn-primary');
                     next();
                 });
             }
@@ -81,6 +82,11 @@ $("document").ready(function() {
         });
         if(!exists && name !== "")
         {
+            dimensions.push({
+                "name": name,
+                "data": null
+            });
+
             $('#dimensions').append("<option>" + name + "</option>")
             $('#dimeName').val('');
             $('#dimension_add_cntrls').removeClass('error')
@@ -90,11 +96,16 @@ $("document").ready(function() {
         btn.button('reset');
     });
 });
+
+//textbox error clearing
 $("document").ready(function() {
     $('input').focus(function() {
         $('#dimension_add_cntrls').removeClass('error')
+        disableSelection(true);
+        $('#dimensions').find("option").attr("selected", false);
     });
 });
+
 //Table selection and column loading
 $("document").ready(function(){
     $('#tableSelect').change(function(){
@@ -124,6 +135,7 @@ $("document").ready(function(){
 //dimension selection
 $("document").ready(function() {
     $('#dimensions').change(function(){
+        var index = $(this).prop('selectedIndex');
         var selected = $(this).val();
         if(selected !== null)
             disableSelection(false);
@@ -132,16 +144,42 @@ $("document").ready(function() {
     });
 });
 
+//add granularity button
+$("document").ready(function() {
+    $('#addColumn').click(function() {
+        var btn = $(this)
+        var selected = $('#columns').prop('selectedIndex');
+        if(selected < 0)
+        {
+            $('#col-arr').addClass('icon-white')
+            btn.addClass('btn-danger ').delay(2000).queue(function(next){
+                btn.removeClass('btn-danger')
+                $('#col-arr').removeClass('icon-white')
+                next();
+            });
+        }
+        else
+        {
+            
+        }
+    });
+});
+
+//handle disabling some selection controls
 function disableSelection(val)
 {
     if (val)
     {
+        $('#tableSelect').find("option").attr("selected", false);
+        $('#columns').empty();
         $('#tableSelect').attr('disabled', 'disabled');
         $('#columns').attr('disabled', 'disabled');
+        $('#addColumn').attr('disabled', 'disabled');
     }
     else
     {
         $('#tableSelect').removeAttr('disabled');
         $('#columns').removeAttr('disabled');
+        $('#addColumn').removeAttr('disabled');
     }
 }
