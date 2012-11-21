@@ -60,7 +60,7 @@ public class DBTable
     {
         TableType tType = TableType.UNKNOWN;
 
-        if(type.equalsIgnoreCase("system view"))
+        if(type.equalsIgnoreCase("system view") || type.equalsIgnoreCase("view"))
             tType = TableType.VIEW;
         else if(type.equalsIgnoreCase("base table"))
             tType = TableType.TABLE;

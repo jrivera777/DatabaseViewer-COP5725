@@ -49,11 +49,10 @@ public class DBInfo extends HttpServlet
                 java.sql.PreparedStatement statement = conn.prepareStatement(
                         "select table_name, table_type from information_schema.tables "
                         + "where table_schema = ?");
-                statement.setString(1, "world");
+                statement.setString(1, dbName);
 
                 ResultSet rs = statement.executeQuery();
 
-                int count = 0;
                 List<TreeData> tree = new ArrayList<TreeData>();
                 TreeData tablesRoot = new TreeData("Tables", "");
                 TreeData viewsRoot = new TreeData("Views", "");
