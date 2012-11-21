@@ -18,14 +18,18 @@
         <title>Database Information</title>
         <script>
             $(document).ready(function(){
-                $('#body').tree()
+                $.get('DBInfo', function(data){
+                    $('#body').tree({
+                        data: data  
+                    });
+                });
             });
         </script>
     </head>
     <body>
         <div class="container-fluid">
             <div class="row-fluid">
-                <div id="body" class="span10 offset1" data-url="DBInfo"></div>
+                <div id="body" class="span10 offset1"></div>
             </div>
         </div>
     </div>

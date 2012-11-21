@@ -17,14 +17,14 @@
         <title>COP5725 Database Viewer</title>
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="row-fluid">
+        <div class="container">
+            <div class="row">
                 <div class="span8 offset2">
                     <h1 class="center-text">COP5725 Database Viewer</h1>
                 </div>
             </div>
-            <div class="row-fluid">
-                <div class="span8 offset2 well well-small">
+            <div class="row">
+                <div class="span8 offset2 well">
                     <h3 class="center-text">Data Source</h3>
                     <form class="form-horizontal" method="get" action="UserLogin">
                         <div class="control-group">

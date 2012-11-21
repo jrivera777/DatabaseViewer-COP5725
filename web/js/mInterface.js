@@ -84,7 +84,7 @@ $("document").ready(function() {
         {
             dimensions.push({
                 "name": name,
-                "data": null
+                "data": []
             });
 
             $('#dimensions').append("<option>" + name + "</option>")
@@ -111,9 +111,8 @@ $("document").ready(function(){
     $('#tableSelect').change(function(){
         var index = $(this).prop('selectedIndex');
         var chosen = $(this).val();
-        if(index <= 0)
-            $('#columns').empty();
-        else
+        $('#columns').empty();
+        if(index > 0)
         {
             var tables = dbData.children
             $.each(tables, function(i, vals){
@@ -148,11 +147,16 @@ $("document").ready(function() {
 $("document").ready(function() {
     $('#addColumn').click(function() {
         var btn = $(this)
-        var selected = $('#columns').prop('selectedIndex');
-        if(selected < 0)
+        var selectedDimensionIndex = $('#dimensions').prop('selectedIndex');
+        var selectedTable = $('#tableSelect').val();
+        var selectedTableIndex = $('#tableSelect').prop('selectedIndex');
+        var selecteColIndex = $('#columns').prop('selectedIndex');
+        var selectedVal = $('#columns').val();
+        var exists = false;
+        if(selecteColIndex < 0)
         {
             $('#col-arr').addClass('icon-white')
-            btn.addClass('btn-danger ').delay(2000).queue(function(next){
+            btn.addClass('btn-danger').delay(2000).queue(function(next){
                 btn.removeClass('btn-danger')
                 $('#col-arr').removeClass('icon-white')
                 next();
@@ -160,10 +164,44 @@ $("document").ready(function() {
         }
         else
         {
+            $('#granularity option').each(function(){
+                if (this.value == selectedVal)
+                {
+                    exists = true;
+                    return false;
+                }
+            });
+            if(!exists && selectedVal !== "")
+            {
+                dimensions[selectedDimensionIndex].data.push({
+                    "tableName": selectedTable,
+                    "data": [ selectedVal ]
+                });
+
+                $('#granularity').append("<option>" + selectedVal + "</option>")
+                $('#col-arr').addClass('icon-white')
+                btn.addClass('btn-success').delay(2000).queue(function(next){
+                    btn.removeClass('btn-success')
+                    $('#col-arr').removeClass('icon-white')
+                    next();
+                });
+            }
+            var tableData = dimensions[selectedDimensionIndex].data;
             
+            alert(tableData[findIndexByKeyValue(tableData, 'tableName', selectedTable)].tableName);
         }
     });
 });
+
+function findIndexByKeyValue(obj, key, value)
+{
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i][key] == value) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 //handle disabling some selection controls
 function disableSelection(val)
