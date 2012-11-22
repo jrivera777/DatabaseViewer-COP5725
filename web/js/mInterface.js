@@ -53,7 +53,7 @@ $("document").ready(function() {
 
                 btn.button('reset');
                 btn.removeClass('btn-primary');
-                btn.addClass(succ).delay(2000).queue(function(next){
+                btn.addClass(succ).delay(1000).queue(function(next){
                     btn.removeClass(succ)
                     btn.addClass('btn-primary');
                     next();
@@ -134,7 +134,6 @@ $("document").ready(function(){
 //dimension selection
 $("document").ready(function() {
     $('#dimensions').change(function(){
-        var index = $(this).prop('selectedIndex');
         var selected = $(this).val();
         if(selected !== null)
             disableSelection(false);
@@ -149,19 +148,11 @@ $("document").ready(function() {
         var btn = $(this)
         var selectedDimensionIndex = $('#dimensions').prop('selectedIndex');
         var selectedTable = $('#tableSelect').val();
-        var selectedTableIndex = $('#tableSelect').prop('selectedIndex');
         var selecteColIndex = $('#columns').prop('selectedIndex');
         var selectedVal = $('#columns').val();
         var exists = false;
         if(selecteColIndex < 0)
-        {
-            $('#col-arr').addClass('icon-white')
-            btn.addClass('btn-danger').delay(2000).queue(function(next){
-                btn.removeClass('btn-danger')
-                $('#col-arr').removeClass('icon-white')
-                next();
-            });
-        }
+            applySuccFail(btn, 'col-arr', false);
         else
         {
             $('#granularity option').each(function(){
@@ -179,19 +170,67 @@ $("document").ready(function() {
                 });
 
                 $('#granularity').append("<option>" + selectedVal + "</option>")
-                $('#col-arr').addClass('icon-white')
-                btn.addClass('btn-success').delay(2000).queue(function(next){
-                    btn.removeClass('btn-success')
-                    $('#col-arr').removeClass('icon-white')
-                    next();
-                });
+                applySuccFail(btn, 'col-arr', true);
             }
-            var tableData = dimensions[selectedDimensionIndex].data;
-            
-            alert(tableData[findIndexByKeyValue(tableData, 'tableName', selectedTable)].tableName);
+            else
+            {
+                applySuccFail(btn, 'col-arr', false);
+            }
         }
     });
 });
+
+//Order granularity buttons
+$("document").ready(function() {
+    $('.up-down').click(function() {
+        var id = this.id;
+        var btn = $(this);
+        moveItem(btn, btn.children()[0].id);
+    });
+});
+
+function moveItem(btn, direction)
+{
+    var selected = $('#granularity option:selected');
+    var failed = selected.length == 0;
+    if(direction.indexOf("up") > 0)
+    {
+        if(selected.prev().length == 0)
+            failed = true;
+        else
+        {
+            selected.each(function(){
+                $(this).insertBefore($(this).prev());
+                failed = false;
+            });
+        }
+    }
+    else
+    {
+        if(selected.next().length == 0)
+            failed = true;
+        else
+        {
+            selected.each(function(){
+                $(this).insertAfter($(this).next());
+            });
+        }
+    }
+    applySuccFail(btn, direction, !failed);
+}
+
+// Parameters: string  - button to manipulate
+//             boolean - true to apply success color.  Failure color otherwise.
+function applySuccFail(btn, arr, succ)
+{
+    var css = succ ? 'btn-success' : 'btn-danger';
+    $('#' + arr).addClass('icon-white')
+    btn.addClass(css).delay(1000).queue(function(next){
+        btn.removeClass(css)
+        $('#' + arr).removeClass('icon-white')
+        next();
+    });
+}
 
 function findIndexByKeyValue(obj, key, value)
 {
@@ -210,14 +249,21 @@ function disableSelection(val)
     {
         $('#tableSelect').find("option").attr("selected", false);
         $('#columns').empty();
+        $('#granularity').empty();
         $('#tableSelect').attr('disabled', 'disabled');
         $('#columns').attr('disabled', 'disabled');
         $('#addColumn').attr('disabled', 'disabled');
+        $('#granularity').attr('disabled', 'disabled');
+        $('#moveGranUp').attr('disabled', 'disabled');
+        $('#moveGranDown').attr('disabled', 'disabled');
     }
     else
     {
         $('#tableSelect').removeAttr('disabled');
         $('#columns').removeAttr('disabled');
         $('#addColumn').removeAttr('disabled');
+        $('#granularity').removeAttr('disabled');
+        $('#moveGranUp').removeAttr('disabled');
+        $('#moveGranDown').removeAttr('disabled');
     }
 }

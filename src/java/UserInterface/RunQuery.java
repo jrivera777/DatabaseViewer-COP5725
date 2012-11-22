@@ -65,7 +65,10 @@ public class RunQuery extends HttpServlet
                     for(int i = 0; i < rsMeta.getColumnCount(); i++)
                     {
                         sb.append("<td>");
-                        sb.append(rs.getString(i + 1));
+                        if(rsMeta.getColumnTypeName(i + 1).equalsIgnoreCase("blob"))
+                            sb.append("[BLOB Not Shown]");
+                        else
+                            sb.append(rs.getString(i + 1));
                         sb.append("</td>");
                     }
                     sb.append("</tr>");

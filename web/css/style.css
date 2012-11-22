@@ -15,8 +15,18 @@ body
 .boxsizingBorder
 {
     -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.btn-align
+{
+    display: inline-block;
+    width: 48px;
+    vertical-align: top;
+}
+.btn-align button
+{
+    margin:5px;
 }
 .center-text
 {
@@ -33,18 +43,12 @@ body
     width: 100%;
     max-height:460px;
 }
-.btn-align
+.up-down
 {
-    display: inline-block;
-    width: 70px;
-    vertical-align: top;
-}
-.btn-align button
-{
-    margin:5px;
+
 }
 @media (max-width: 740px) {
-  .span4{
-    width: 100% !important;
-  }
+    .span4{
+        width: 100% !important;
+    }
 }

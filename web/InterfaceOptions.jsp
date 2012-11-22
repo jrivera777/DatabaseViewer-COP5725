@@ -40,7 +40,7 @@
                                         <button id="clearResults" type="submit" class="btn">Clear Results</button>
                                     </div>
                                     <textarea name="query" id="query-input" class="boxsizingBorder" row-fluids="6"></textarea>
-                                    <div id="results" class="table-container-fluid">
+                                    <div id="results" class="table-container">
                                     </div>
                                 </div>
                             </div>
@@ -76,8 +76,8 @@
                                             <label>Granularity:</label>
                                             <select disabled="disabled" size="4" id="granularity"></select>
                                             <span class="btn-align">
-                                                <button id="moveGranUp" disabled="disabled" class="btn btn-small" type="button"><i id="gran-up" class="icon-arrow-up"></i></button>
-                                                <button id="moveGranDown" disabled="disabled" class="btn btn-small" type="button"><i id="gran-down" class="icon-arrow-down"></i></button>
+                                                <button id="moveGranUp" disabled="disabled" class="up-down btn btn-small" type="button"><i id="gran-up" class="icon-arrow-up"></i></button>
+                                                <button id="moveGranDown" disabled="disabled" class="up-down btn btn-small" type="button"><i id="gran-down" class="icon-arrow-down"></i></button>
                                             </span>
                                         </div>
                                     </div>

@@ -68,8 +68,8 @@ public class DBInfo extends HttpServlet
                         viewsRoot.addChild(child);
                 }
 
-                loadData(tablesRoot, conn);
-                loadData(viewsRoot, conn);
+                loadData(tablesRoot, conn, dbName);
+                loadData(viewsRoot, conn, dbName);
 
                 TreeData dbRoot = new TreeData("Data Source - " + dbName, "");
                 dbRoot.addChild(tablesRoot);
@@ -154,7 +154,7 @@ public class DBInfo extends HttpServlet
         return "Short description";
     }// </editor-fold>
 
-    private void loadData(TreeData data, java.sql.Connection conn) throws SQLException
+    private void loadData(TreeData data, java.sql.Connection conn, String schemaName) throws SQLException
     {
         if(data.getChildren() == null)
             return;
@@ -162,8 +162,10 @@ public class DBInfo extends HttpServlet
         {
             java.sql.PreparedStatement getCols = conn.prepareStatement(
                     "select column_name, data_type from information_schema.columns "
-                    + "where table_name=?");
+                    + "where table_name=? and table_schema=?");
             getCols.setString(1, td.getLabel());
+            getCols.setString(2, schemaName);
+
             ResultSet cols = getCols.executeQuery();
 
             while(cols.next())
