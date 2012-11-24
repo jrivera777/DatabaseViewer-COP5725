@@ -63,6 +63,14 @@ $("document").ready(function() {
     });
 });
 
+
+//Save Cube button
+$("document").ready(function() {
+    $('#saveCube').click(function() {
+        printDimensions();
+    });
+});
+
 //create dimension button
 $("document").ready(function() {
     $('#createDime').click(function() {
@@ -86,7 +94,6 @@ $("document").ready(function() {
                 "name": name,
                 "data": []
             });
-
             $('#dimensions').append("<option>" + name + "</option>")
             $('#dimeName').val('');
             $('#dimension_add_cntrls').removeClass('error')
@@ -112,6 +119,7 @@ $("document").ready(function(){
         var index = $(this).prop('selectedIndex');
         var chosen = $(this).val();
         $('#columns').empty();
+        $('#granularity').empty();
         if(index > 0)
         {
             var tables = dbData.children
@@ -164,18 +172,22 @@ $("document").ready(function() {
             });
             if(!exists && selectedVal !== "")
             {
-                dimensions[selectedDimensionIndex].data.push({
-                    "tableName": selectedTable,
-                    "data": [ selectedVal ]
-                });
+                var found = findIndexByKeyValue(dimensions[selectedDimensionIndex].data , "name", selectedTable)
 
+                if(found < 0)
+                {
+                    dimensions[selectedDimensionIndex].data.push({
+                        "name": selectedTable,
+                        "data": [ selectedVal ]
+                    });
+                }
+                else
+                    dimensions[selectedDimensionIndex].data[found].data.push(selectedVal);
                 $('#granularity').append("<option>" + selectedVal + "</option>")
                 applySuccFail(btn, 'col-arr', true);
             }
             else
-            {
                 applySuccFail(btn, 'col-arr', false);
-            }
         }
     });
 });
@@ -191,8 +203,12 @@ $("document").ready(function() {
 
 function moveItem(btn, direction)
 {
+    var selectedDimensionIndex = $('#dimensions').prop('selectedIndex');
+    var selectedCol = $('#tableSelect').val();
     var selected = $('#granularity option:selected');
+    var selectedIndex = $('#granularity').prop('selectedIndex');
     var failed = selected.length == 0;
+    //var index = findIndexByKeyValue($(dimensions, key, selected.val()));
     if(direction.indexOf("up") > 0)
     {
         if(selected.prev().length == 0)
@@ -200,8 +216,10 @@ function moveItem(btn, direction)
         else
         {
             selected.each(function(){
+                var col = findIndexByKeyValue(dimensions[selectedDimensionIndex].data, "name", selectedCol);
+                var toSwap = dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex, 1);
+                dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex-1, 0, toSwap);
                 $(this).insertBefore($(this).prev());
-                failed = false;
             });
         }
     }
@@ -212,6 +230,9 @@ function moveItem(btn, direction)
         else
         {
             selected.each(function(){
+                var col = findIndexByKeyValue(dimensions[selectedDimensionIndex].data, "name", selectedCol);
+                var toSwap = dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex, 1);
+                dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex+1, 0, toSwap);
                 $(this).insertAfter($(this).next());
             });
         }
@@ -235,8 +256,17 @@ function applySuccFail(btn, arr, succ)
 function findIndexByKeyValue(obj, key, value)
 {
     for (var i = 0; i < obj.length; i++) {
-        if (obj[i][key] == value) {
-            return i;
+        if(key == "")
+        {
+            if (obj[i] == value) {
+                return i;
+            }
+        }
+        else
+        {
+            if (obj[i][key] == value) {
+                return i;
+            }
         }
     }
     return -1;
@@ -266,4 +296,21 @@ function disableSelection(val)
         $('#moveGranUp').removeAttr('disabled');
         $('#moveGranDown').removeAttr('disabled');
     }
+}
+
+function printDimensions()
+{
+    var message = [];
+    message.push("Cube:\n")
+    for(var i = 0; i < dimensions.length; i++)
+    {
+        message.push("\tDimension: " + dimensions[i].name + "\n");
+        for(var j = 0; j < dimensions[i].data.length; j++)
+        {
+            message.push("\t\tTable: " + dimensions[i].data[j].name + "\n");
+            for(var k = 0; k < dimensions[i].data[j].data.length; k++)
+                message.push("\t\t\tGranularity: " + dimensions[i].data[j].data[k] + "\n");
+        }
+    }
+    alert(message.join(""));
 }
