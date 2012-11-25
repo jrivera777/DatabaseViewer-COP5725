@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Cube
 {
     private String name;
+    private String dbName;
     private ArrayList<Dimension> dimensions;
 
     public ArrayList<Dimension> getDimensions()
@@ -26,16 +27,25 @@ public class Cube
         this.name = name;
     }
 
+    public String getDbName()
+    {
+        return dbName;
+    }
+
+    public void setDbName(String dbName)
+    {
+        this.dbName = dbName;
+    }
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
         sb.append("Cube Name: " + this.getName() + "\n");
-        sb.append("\tDimensions: \n\t{\n");
+        sb.append("Dimensions: \n{\n");
         for(Dimension dime : this.getDimensions())
         {
-           sb.append("\t\t" + dime.toString() + "\n");
+           sb.append("" + dime.toString() + "\n");
         }
-        sb.append("\t}");
+        sb.append("}");
 
         return sb.toString();
     }

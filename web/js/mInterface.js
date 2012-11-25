@@ -1,6 +1,7 @@
 //object holds table data
 var dbData;
 var dimensions = [];
+var measures = [];
 //setup tabs
 $("document").ready(function() {
     $(function() {
@@ -49,7 +50,7 @@ $("document").ready(function() {
                 $('#results').append(data);
                 $('#results').css("margin-bottom", "10px");
                 
-                var succ = data.indexOf("alert") < 0 ? 'btn-success' : 'btn-danger';
+                var succ = data.indexOf("alert-error") < 0 ? 'btn-success' : 'btn-danger';
 
                 btn.button('reset');
                 btn.removeClass('btn-primary');
@@ -70,8 +71,26 @@ $("document").ready(function() {
         var btn = $(this)
         var cubeName = $('#cubeName').val();
         var dims = dimensions;
+
+        if(cubeName == "")
+        {
+            $('#results').empty();
+            $('#results').append("<div class=\"alert alert-error\">\n\
+              <button type=\"button\" class=\"close\"data-dismiss=\"alert\">\n\
+              ×</button>Cube must have a name.</div>")
+            return;
+        }
+        if(dimensions.length < 1)
+        {
+            $('#results').empty();
+            $('#results').append("<div class=\"alert alert-error\">\n\
+              <button type=\"button\" class=\"close\"data-dismiss=\"alert\">\n\
+              ×</button>Cube must have at least one dimension or Measure.</div>")
+            return;
+        }
+
         btn.button('loading');
-        printDimensions();
+        //printDimensions();
         $.ajax({
             url:"SaveCube",
             traditional: true,
@@ -82,7 +101,7 @@ $("document").ready(function() {
             },
             success: function(data)
             {
-                var succ = data.indexOf("alert") < 0 ? 'btn-success' : 'btn-danger';
+                var succ = data.indexOf("alert-error") < 0 ? 'btn-success' : 'btn-danger';
                 $('#results').empty();
                 $('#results').append(data);
 
