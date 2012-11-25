@@ -1,4 +1,4 @@
-package UserInterface;
+package DBDataStructures;
 
 public class DBTableColumn
 {

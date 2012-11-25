@@ -45,11 +45,8 @@ public class RunQuery extends HttpServlet
                         + dbAddr + "/" + dbName + "?user=" + dbUser
                         + "&password=" + dbPW;
 
-                System.out.println("LOADED DRIVER.");
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(userConnect);
-
-                System.out.println("Made connection.");
 
                 java.sql.PreparedStatement statement = conn.prepareStatement(query);
                 ResultSet rs = statement.executeQuery();

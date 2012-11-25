@@ -48,7 +48,8 @@
                                 <div class="span12 form-inline center-text well well-small">
                                     <label class="control-label" for="cubeName">Cube Name:</label>
                                     <input id="cubeName" type="text" placeholder="Cube_1"></input>
-                                    <button id="saveCube" type="submit" class="btn">Save Cube</button>
+                                    <button id="saveCube" type="submit" class="btn btn-primary" data-loading-text="Saving...">Save Cube</button>
+                                    <button id="clearCube" type="submit" class="btn">Clear Cube</button>
                                 </div>
                             </div>
                             <div class="row-fluid">

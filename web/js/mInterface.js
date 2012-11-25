@@ -67,7 +67,45 @@ $("document").ready(function() {
 //Save Cube button
 $("document").ready(function() {
     $('#saveCube').click(function() {
+        var btn = $(this)
+        var cubeName = $('#cubeName').val();
+        var dims = dimensions;
+        btn.button('loading');
         printDimensions();
+        $.ajax({
+            url:"SaveCube",
+            traditional: true,
+            data:
+            {
+                name: cubeName,
+                dimes: JSON.stringify(dimensions)
+            },
+            success: function(data)
+            {
+                var succ = data.indexOf("alert") < 0 ? 'btn-success' : 'btn-danger';
+                $('#results').empty();
+                $('#results').append(data);
+
+                btn.button('reset');
+                btn.removeClass('btn-primary');
+                btn.addClass(succ).delay(1000).queue(function(next){
+                    btn.removeClass(succ)
+                    btn.addClass('btn-primary');
+                    next();
+                });
+            }
+        });
+        btn.button('reset');
+    });
+});
+
+//Clear Cube button
+$("document").ready(function() {
+    $('#clearCube').click(function() {
+        dimensions.length = 0;
+        $('#dimensions').empty();
+        $('#cubeName').val('');
+        disableSelection(true);
     });
 });
 
@@ -92,7 +130,7 @@ $("document").ready(function() {
         {
             dimensions.push({
                 "name": name,
-                "data": []
+                "data": {}
             });
             $('#dimensions').append("<option>" + name + "</option>")
             $('#dimeName').val('');
@@ -108,6 +146,9 @@ $("document").ready(function() {
 $("document").ready(function() {
     $('input').focus(function() {
         $('#dimension_add_cntrls').removeClass('error')
+        $('#tableSelect').find("option").attr("selected", false);
+        $('#columns').empty();
+        $('#granularity').empty();
         disableSelection(true);
         $('#dimensions').find("option").attr("selected", false);
     });
@@ -122,7 +163,9 @@ $("document").ready(function(){
         $('#granularity').empty();
         if(index > 0)
         {
-            var tables = dbData.children
+            var tables = dbData.children;
+
+            //load column options
             $.each(tables, function(i, vals){
                 $.each(vals.children, function(i, item){
                     if(item.dataName === chosen)
@@ -142,9 +185,37 @@ $("document").ready(function(){
 //dimension selection
 $("document").ready(function() {
     $('#dimensions').change(function(){
+        $('#tableSelect').find("option").attr("selected", false);
+        $('#columns').empty();
+        $('#granularity').empty();
         var selected = $(this).val();
+        var selectedDimensionIndex = $('#dimensions').prop('selectedIndex');
         if(selected !== null)
+        {
+            var chosen = dimensions[selectedDimensionIndex].data.name;
             disableSelection(false);
+            $('#tableSelect').val(chosen);
+
+            //load previously selected granularity options
+            if(!jQuery.isEmptyObject(dimensions[selectedDimensionIndex].data))
+                for(var i = 0; i < dimensions[selectedDimensionIndex].data.data.length; i++)
+                    $('#granularity').append("<option>" + dimensions[selectedDimensionIndex].data.data[i] + "</option>");
+
+            //load column options
+            var tables = dbData.children;
+            $.each(tables, function(i, vals){
+                $.each(vals.children, function(i, item){
+                    if(item.dataName === chosen)
+                    {
+                        var colName;
+                        $.each(item.children, function(i, cols){
+                            colName = "<option>" + cols.dataName + "</option>";
+                            $('#columns').append(colName);
+                        });
+                    }
+                });
+            });
+        }
         else
             disableSelection(true);
     });
@@ -172,17 +243,15 @@ $("document").ready(function() {
             });
             if(!exists && selectedVal !== "")
             {
-                var found = findIndexByKeyValue(dimensions[selectedDimensionIndex].data , "name", selectedTable)
-
-                if(found < 0)
+                if(jQuery.isEmptyObject(dimensions[selectedDimensionIndex].data) || dimensions[selectedDimensionIndex].data.name != selectedTable)
                 {
-                    dimensions[selectedDimensionIndex].data.push({
+                    dimensions[selectedDimensionIndex].data = {
                         "name": selectedTable,
                         "data": [ selectedVal ]
-                    });
+                    };
                 }
                 else
-                    dimensions[selectedDimensionIndex].data[found].data.push(selectedVal);
+                    dimensions[selectedDimensionIndex].data.data.push(selectedVal);
                 $('#granularity').append("<option>" + selectedVal + "</option>")
                 applySuccFail(btn, 'col-arr', true);
             }
@@ -216,9 +285,8 @@ function moveItem(btn, direction)
         else
         {
             selected.each(function(){
-                var col = findIndexByKeyValue(dimensions[selectedDimensionIndex].data, "name", selectedCol);
-                var toSwap = dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex, 1);
-                dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex-1, 0, toSwap);
+                var toSwap = dimensions[selectedDimensionIndex].data.data.splice(selectedIndex, 1);
+                dimensions[selectedDimensionIndex].data.data.splice(selectedIndex-1, 0, toSwap[0]);
                 $(this).insertBefore($(this).prev());
             });
         }
@@ -230,9 +298,8 @@ function moveItem(btn, direction)
         else
         {
             selected.each(function(){
-                var col = findIndexByKeyValue(dimensions[selectedDimensionIndex].data, "name", selectedCol);
-                var toSwap = dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex, 1);
-                dimensions[selectedDimensionIndex].data[col].data.splice(selectedIndex+1, 0, toSwap);
+                var toSwap = dimensions[selectedDimensionIndex].data.data.splice(selectedIndex, 1);
+                dimensions[selectedDimensionIndex].data.data.splice(selectedIndex+1, 0, toSwap[0]);
                 $(this).insertAfter($(this).next());
             });
         }
@@ -241,16 +308,17 @@ function moveItem(btn, direction)
 }
 
 // Parameters: string  - button to manipulate
+//             string  - name of img to manipulate
 //             boolean - true to apply success color.  Failure color otherwise.
 function applySuccFail(btn, arr, succ)
 {
     var css = succ ? 'btn-success' : 'btn-danger';
-    $('#' + arr).addClass('icon-white')
-    btn.addClass(css).delay(1000).queue(function(next){
+    $('#' + arr).addClass('icon-white');
+    btn.addClass(css);
+    window.setTimeout(function(){
         btn.removeClass(css)
         $('#' + arr).removeClass('icon-white')
-        next();
-    });
+    }, 500);
 }
 
 function findIndexByKeyValue(obj, key, value)
@@ -277,9 +345,6 @@ function disableSelection(val)
 {
     if (val)
     {
-        $('#tableSelect').find("option").attr("selected", false);
-        $('#columns').empty();
-        $('#granularity').empty();
         $('#tableSelect').attr('disabled', 'disabled');
         $('#columns').attr('disabled', 'disabled');
         $('#addColumn').attr('disabled', 'disabled');
@@ -301,15 +366,15 @@ function disableSelection(val)
 function printDimensions()
 {
     var message = [];
-    message.push("Cube:\n")
+    message.push("Cube: " + $('#cubeName').val() + "\n")
     for(var i = 0; i < dimensions.length; i++)
     {
-        message.push("\tDimension: " + dimensions[i].name + "\n");
-        for(var j = 0; j < dimensions[i].data.length; j++)
+        var table = dimensions[i].data;
+        if(!jQuery.isEmptyObject(table))
         {
-            message.push("\t\tTable: " + dimensions[i].data[j].name + "\n");
-            for(var k = 0; k < dimensions[i].data[j].data.length; k++)
-                message.push("\t\t\tGranularity: " + dimensions[i].data[j].data[k] + "\n");
+            message.push("\tDimension: " + dimensions[i].name + " on Table: " + dimensions[i].data.name + "\n");
+            for(var k = 0; k < dimensions[i].data.data.length; k++)
+                message.push("\t\t\tGranularity: " + dimensions[i].data.data[k] + "\n");
         }
     }
     alert(message.join(""));

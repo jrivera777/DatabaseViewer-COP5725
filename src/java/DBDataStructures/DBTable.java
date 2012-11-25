@@ -1,4 +1,4 @@
-package UserInterface;
+package DBDataStructures;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public class DBTable
 
         return tType;
     }
-    enum TableType
+    public enum TableType
     {
         UNKNOWN,
         TABLE,
