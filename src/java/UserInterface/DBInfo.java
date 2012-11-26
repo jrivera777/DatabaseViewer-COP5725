@@ -48,8 +48,8 @@ public class DBInfo extends HttpServlet
                         + "&password=" + dbPW;
 
                 //String cop5725Connect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
-                String cop5725Connect = "jdbc:mysql://localhost/cop5725?user=root&password=control";
-                //String cop5725Connect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
+                //String cop5725Connect = "jdbc:mysql://localhost/cop5725?user=root&password=control";
+                String cop5725Connect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
 
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(userConnect);

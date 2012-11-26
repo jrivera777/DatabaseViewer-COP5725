@@ -33,5 +33,6 @@ $("document").ready(function(){
 //get cube measures from cube name
 function getMeasuresFromCube(name)
 {
-    
+    var measures = dbCubes.children[1];
+    //$.each()
 }
