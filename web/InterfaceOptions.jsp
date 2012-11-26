@@ -48,6 +48,8 @@
                                 <div class="span12 form-inline center-text well well-small">
                                     <label class="control-label" for="cubeName">Cube Name:</label>
                                     <input id="cubeName" type="text" placeholder="Cube_1"></input>
+                                    <span> on table: </span>
+                                    <select id="tableSelect"></select>
                                     <button id="saveCube" type="submit" class="btn btn-primary" data-loading-text="Saving...">Save Cube</button>
                                     <button id="clearCube" type="submit" class="btn">Clear Cube</button>
                                 </div>
@@ -65,22 +67,48 @@
                                             </div>
                                         </div>
                                         <div class="span4 form-horizontal">
-                                            <div id="tbl_select_cntrls" class="control-group">
-                                                <label>Select Table:</label>
-                                                <select disabled="disabled" id="tableSelect"></select>
-                                            </div>
                                             <div class="control-group">
-                                                <select size="4" disabled="disabled" id="columns"></select>
+                                                <label>Choose Column:</label>
+                                                <select size="5" disabled="disabled" id="columns"></select>
                                                 <button id="addColumn" disabled="disabled" class="btn btn-small" type="button"><i id="col-arr" class="icon-arrow-right"></i></button>
                                             </div>
                                         </div>
                                         <div class="span4 form-horizontal">
                                             <label>Granularity:</label>
-                                            <select disabled="disabled" size="4" id="granularity"></select>
+                                            <select disabled="disabled" size="5" id="granularity"></select>
                                             <span class="btn-align">
                                                 <button id="moveGranUp" disabled="disabled" class="up-down btn btn-small" type="button"><i id="gran-up" class="icon-arrow-up"></i></button>
                                                 <button id="moveGranDown" disabled="disabled" class="up-down btn btn-small" type="button"><i id="gran-down" class="icon-arrow-down"></i></button>
                                             </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12 well well-small">
+                                    <div class="row-fluid">
+                                        <div class="span4 form-horizontal">
+                                            <div id ="aggregate_cntrls" class="control-group">
+                                                <label>Aggregate:</label>
+                                                <select size="5" id="aggrs">
+                                                    <option>AVG</option>
+                                                    <option>COUNT</option>
+                                                    <option>MAX</option>
+                                                    <option>MIN</option>
+                                                    <option>SUM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="span4 form-horizontal">
+                                            <div class="control-group">
+                                                <label>Choose Column:</label>
+                                                <select size="5" id="measureCols"></select>
+                                                <button id="addMeasure" disabled="disabled" class="btn btn-small" type="button"><i id="m-arr" class="icon-arrow-right"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="span4 form-horizontal">
+                                            <label>Measures:</label>
+                                            <select size="5" id="measures"style="width: auto; min-width:220px; max-width:98%; overflow: auto;"></select>
                                         </div>
                                     </div>
                                 </div>

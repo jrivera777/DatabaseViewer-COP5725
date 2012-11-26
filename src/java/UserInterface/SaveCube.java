@@ -6,11 +6,11 @@ package UserInterface;
 
 import DBDataStructures.Cube;
 import DBDataStructures.Dimension;
+import DBDataStructures.Measure;
 import java.sql.Connection;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -51,29 +51,50 @@ public class SaveCube extends HttpServlet
         try
         {
             Cube newCube = new Cube();
+
             newCube.setName(request.getParameter("name"));
+            newCube.setTable(request.getParameter("tableName"));
             newCube.setDbName((String) request.getSession().getAttribute("dbname"));
+
             String dimensions = request.getParameter("dimes");
-            JSONArray jsonarr = (JSONArray) JSONValue.parse(dimensions);
+            String measures = request.getParameter("msrs");
+            JSONArray jsonDimensions = (JSONArray) JSONValue.parse(dimensions);
+            JSONArray jsonMeasures = (JSONArray) JSONValue.parse(measures);
+
             ArrayList<Dimension> dimes = new ArrayList<Dimension>();
-            for(int i = 0; i < jsonarr.size(); i++)
+            for(int i = 0; i < jsonDimensions.size(); i++)
             {
                 Dimension newDimension = new Dimension();
-                JSONObject jObj = (JSONObject) jsonarr.get(i);
+
+                JSONObject jObj = (JSONObject) jsonDimensions.get(i);
                 newDimension.setName((String) jObj.get("name"));
                 JSONObject table = (JSONObject) jObj.get("data");
-                newDimension.setTable((String) table.get("name"));
                 JSONArray grans = (JSONArray) table.get("data");
+
                 ArrayList<String> dimeGrans = new ArrayList<String>();
                 for(int j = 0; j < grans.size(); j++)
                     dimeGrans.add((String) grans.get(j));
+
                 newDimension.setGranules(dimeGrans);
                 dimes.add(newDimension);
             }
             newCube.setDimensions(dimes);
 
+            ArrayList<Measure> msrs = new ArrayList<Measure>();
+            for(int i = 0; i < jsonMeasures.size(); i++)
+            {
+                Measure newMeasure = new Measure();
+                JSONObject jObj = (JSONObject) jsonMeasures.get(i);
+                newMeasure.setType((String) jObj.get("type"));
+                newMeasure.setColumnName((String) jObj.get("columnname"));
+                msrs.add(newMeasure);
+            }
+            newCube.setMeasures(msrs);
+
             System.out.println(newCube.toString());
-            String userConnect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
+
+            //String userConnect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
+            String userConnect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
             try
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -152,12 +173,11 @@ public class SaveCube extends HttpServlet
             if(cubeID < 0)
             {
                 //insert cube
-                statement = conn.prepareStatement("INSERT INTO cube (name, dbname) values (?, ?)");
+                statement = conn.prepareStatement("INSERT INTO cube (name, dbname, tablename) values (?, ?, ?)");
                 statement.setString(1, cube.getName());
                 statement.setString(2, cube.getDbName());
+                statement.setString(3, cube.getTable());
                 statement.execute();
-
-                //get id of inserted cube
 
                 rs = statement.executeQuery("SELECT last_insert_id()");
                 if(!rs.next())
@@ -166,15 +186,15 @@ public class SaveCube extends HttpServlet
                 cubeID = rs.getInt(1);
                 System.out.printf("CUBE ID = %d\n", cubeID);
                 rs.close();
-                //insert dimensions referring to cube
-                statement = conn.prepareStatement("INSERT INTO dimension (name, cube_idcube, tablename) values (?, ?, ?)");
+
+                //insert dimensions
+                statement = conn.prepareStatement("INSERT INTO dimension (name, cube_idcube) values (?, ?)");
                 for(Dimension dime : cube.getDimensions())
                 {
                     int dimeID = -1;
                     statement.clearParameters();
                     statement.setString(1, dime.getName());
                     statement.setInt(2, cubeID);
-                    statement.setString(3, dime.getTable());
                     statement.execute();
                     java.sql.PreparedStatement getDimeID = conn.prepareStatement("SELECT last_insert_id()");
                     rs = getDimeID.executeQuery();
@@ -191,6 +211,17 @@ public class SaveCube extends HttpServlet
                         addGranularity.setInt(3, cubeID);
                         addGranularity.execute();
                     }
+                }
+
+                //insert measures
+                statement = conn.prepareStatement("INSERT INTO measure (type, cube_idcube, columnname) values (?,?,?)");
+                for(Measure ms : cube.getMeasures())
+                {
+                    statement.clearParameters();
+                    statement.setString(1, ms.getType());
+                    statement.setInt(2, cubeID);
+                    statement.setString(3, ms.getColumnName());
+                    statement.execute();
                 }
             }
             else

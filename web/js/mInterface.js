@@ -70,8 +70,7 @@ $("document").ready(function() {
     $('#saveCube').click(function() {
         var btn = $(this)
         var cubeName = $('#cubeName').val();
-        var dims = dimensions;
-
+        var table = $('#tableSelect').val();
         if(cubeName == "")
         {
             $('#results').empty();
@@ -80,13 +79,32 @@ $("document").ready(function() {
               ×</button>Cube must have a name.</div>")
             return;
         }
-        if(dimensions.length < 1)
+        if($('#tableSelect').prop('selectedIndex') <= 0)
         {
             $('#results').empty();
             $('#results').append("<div class=\"alert alert-error\">\n\
               <button type=\"button\" class=\"close\"data-dismiss=\"alert\">\n\
-              ×</button>Cube must have at least one dimension or Measure.</div>")
+              ×</button>Cube must refer to a table.</div>");
             return;
+        }
+        if(dimensions.length < 1 && measures.length < 1)
+        {
+            $('#results').empty();
+            $('#results').append("<div class=\"alert alert-error\">\n\
+              <button type=\"button\" class=\"close\"data-dismiss=\"alert\">\n\
+              ×</button>Cube must have at least one dimension or measure.</div>");
+            return;
+        }
+        for(var i = 0; i < dimensions.length; i++)
+        {
+            if(jQuery.isEmptyObject(dimensions[i].data))
+            {
+                $('#results').empty();
+                $('#results').append("<div class=\"alert alert-error\">\n\
+              <button type=\"button\" class=\"close\"data-dismiss=\"alert\">\n\
+              ×</button>A dimension must have at least one granularity.</div>");
+                return;
+            }
         }
 
         btn.button('loading');
@@ -97,7 +115,9 @@ $("document").ready(function() {
             data:
             {
                 name: cubeName,
-                dimes: JSON.stringify(dimensions)
+                tableName: table,
+                dimes: JSON.stringify(dimensions),
+                msrs: JSON.stringify(measures)
             },
             success: function(data)
             {
@@ -107,11 +127,13 @@ $("document").ready(function() {
 
                 btn.button('reset');
                 btn.removeClass('btn-primary');
-                btn.addClass(succ).delay(1000).queue(function(next){
+                btn.addClass(succ).delay(500).queue(function(next){
                     btn.removeClass(succ)
                     btn.addClass('btn-primary');
                     next();
                 });
+                if(succ.indexOf("success") > 0)
+                    $('#clearCube').click();
             }
         });
         btn.button('reset');
@@ -122,9 +144,19 @@ $("document").ready(function() {
 $("document").ready(function() {
     $('#clearCube').click(function() {
         dimensions.length = 0;
+        measures.length = 0;
+        $('#tableSelect').removeAttr('disabled');
         $('#dimensions').empty();
+        $('#granularity').empty();
         $('#cubeName').val('');
-        disableSelection(true);
+        $('#tableSelect').find("option").attr("selected", false);
+        $('#measureCols').empty();
+        $('#columns').empty();
+        $('#measures').empty();
+        $('#aggrs').find("option").attr("selected", false);
+        disableDimensionSelection(true);
+        disableMeasureSelection(true);
+
     });
 });
 
@@ -132,8 +164,8 @@ $("document").ready(function() {
 $("document").ready(function() {
     $('#createDime').click(function() {
         $('#dimensions').find("option").attr("selected", false);
-        disableSelection(true);
-
+        disableDimensionSelection(true);
+        var disableTableSelection = false;
         var btn = $(this)
         btn.button('loading')
         var name = $('#dimeName').val();
@@ -151,12 +183,18 @@ $("document").ready(function() {
                 "name": name,
                 "data": {}
             });
+            if(dimensions.length > 0)
+                disableTableSelection = true;
             $('#dimensions').append("<option>" + name + "</option>")
             $('#dimeName').val('');
             $('#dimension_add_cntrls').removeClass('error')
         }
         else
             $('#dimension_add_cntrls').addClass('error')
+        if(disableTableSelection)
+            $('#tableSelect').attr('disabled', 'disabled');
+        else
+            $('#tableSelect').removeAttr('disabled');
         btn.button('reset');
     });
 });
@@ -165,11 +203,10 @@ $("document").ready(function() {
 $("document").ready(function() {
     $('input').focus(function() {
         $('#dimension_add_cntrls').removeClass('error')
-        $('#tableSelect').find("option").attr("selected", false);
-        $('#columns').empty();
         $('#granularity').empty();
-        disableSelection(true);
         $('#dimensions').find("option").attr("selected", false);
+        disableDimensionSelection(true);
+        $('#aggrs').find("option").attr("selected", false);
     });
 });
 
@@ -178,12 +215,17 @@ $("document").ready(function(){
     $('#tableSelect').change(function(){
         var index = $(this).prop('selectedIndex');
         var chosen = $(this).val();
+        var selector = $(this).attr("id");
+        $('#dimensions').find("option").attr("selected", false);
+        disableMeasureSelection(true);
+        disableDimensionSelection(true);
         $('#columns').empty();
         $('#granularity').empty();
+        $('#measureCols').empty();
         if(index > 0)
         {
+            disableMeasureSelection(false);
             var tables = dbData.children;
-
             //load column options
             $.each(tables, function(i, vals){
                 $.each(vals.children, function(i, item){
@@ -193,6 +235,7 @@ $("document").ready(function(){
                         $.each(item.children, function(i, cols){
                             colName = "<option>" + cols.dataName + "</option>";
                             $('#columns').append(colName);
+                            $('#measureCols').append(colName);
                         });
                     }
                 });
@@ -204,15 +247,14 @@ $("document").ready(function(){
 //dimension selection
 $("document").ready(function() {
     $('#dimensions').change(function(){
-        $('#tableSelect').find("option").attr("selected", false);
         $('#columns').empty();
         $('#granularity').empty();
         var selected = $(this).val();
         var selectedDimensionIndex = $('#dimensions').prop('selectedIndex');
         if(selected !== null)
         {
-            var chosen = dimensions[selectedDimensionIndex].data.name;
-            disableSelection(false);
+            var chosen = $('#tableSelect').val();
+            disableDimensionSelection(false);
             $('#tableSelect').val(chosen);
 
             //load previously selected granularity options
@@ -236,7 +278,19 @@ $("document").ready(function() {
             });
         }
         else
-            disableSelection(true);
+            disableDimensionSelection(true);
+    });
+});
+
+//aggregate selection
+$("document").ready(function() {
+    $('#aggrs').change(function(){
+        var selected = $(this).val();
+        var selectedDimensionIndex = $('#aggrs').prop('selectedIndex');
+        if(selected !== null)
+            disableMeasureSelection(false);
+        else
+            disableMeasureSelection(true);
     });
 });
 
@@ -280,10 +334,53 @@ $("document").ready(function() {
     });
 });
 
+//add measure button
+$("document").ready(function() {
+    $('#addMeasure').click(function() {
+        var btn = $(this);
+        var table = $('#tableSelect').val();
+        var col = $('#measureCols').val();
+        var exists = false;
+        var disableTable = false;
+        if(col == null)
+        {
+            applySuccFail(btn, 'm-arr', false);
+            return;
+        }
+        var measureVal = [ $('#aggrs').val(),"(", col,")"].join("");
+        $('#measures option').each(function(){
+            if (this.value.indexOf(measureVal) >= 0 && this.value.indexOf(table) >= 0)
+            {
+                exists = true;
+                return false;
+            }
+        });
+        if(exists)
+            applySuccFail(btn, 'm-arr', false);
+        else
+        {
+            var aggrType = $('#aggrs').val();
+            var measureVal = [ aggrType,"(", col,")"].join("");
+            measures.push(
+            {
+                type: aggrType,
+                columnname: col
+            });
+            if(measures.length > 0)
+                disableTable = true;
+            if(disableTable)
+                $('#tableSelect').attr('disabled', 'disabled');
+            else
+                $('#tableSelect').removeAttr('disabled');
+            $('#measures').append("<option>" + measureVal + " on table &lt;" + table + "&gt;</option>");
+            applySuccFail(btn, 'm-arr', true);
+        }
+    });
+});
+
 //Order granularity buttons
 $("document").ready(function() {
     $('.up-down').click(function() {
-        var id = this.id;
         var btn = $(this);
         moveItem(btn, btn.children()[0].id);
     });
@@ -360,11 +457,10 @@ function findIndexByKeyValue(obj, key, value)
 }
 
 //handle disabling some selection controls
-function disableSelection(val)
+function disableDimensionSelection(val)
 {
     if (val)
     {
-        $('#tableSelect').attr('disabled', 'disabled');
         $('#columns').attr('disabled', 'disabled');
         $('#addColumn').attr('disabled', 'disabled');
         $('#granularity').attr('disabled', 'disabled');
@@ -373,12 +469,22 @@ function disableSelection(val)
     }
     else
     {
-        $('#tableSelect').removeAttr('disabled');
         $('#columns').removeAttr('disabled');
         $('#addColumn').removeAttr('disabled');
         $('#granularity').removeAttr('disabled');
         $('#moveGranUp').removeAttr('disabled');
         $('#moveGranDown').removeAttr('disabled');
+    }
+}
+function disableMeasureSelection(val)
+{
+    if (val)
+    {
+        $('#addMeasure').attr('disabled', 'disabled');
+    }
+    else
+    {
+        $('#addMeasure').removeAttr('disabled');
     }
 }
 

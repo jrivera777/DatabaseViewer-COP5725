@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Dimension
 {
     private String name;
-    private String table;
     private ArrayList<String> granules;
 
     public String getName()
@@ -16,16 +15,6 @@ public class Dimension
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public String getTable()
-    {
-        return table;
-    }
-
-    public void setTable(String table)
-    {
-        this.table = table;
     }
 
     public ArrayList<String> getGranules()
@@ -41,7 +30,7 @@ public class Dimension
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("Dimension Name: " + this.getName()+" on Table <" + this.getTable()+ "> [ ");
+        sb.append("Dimension Name: " + this.getName()+ " [ ");
         for(String gran : this.getGranules())
         {
             sb.append(gran + " ");
