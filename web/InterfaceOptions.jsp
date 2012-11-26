@@ -120,17 +120,24 @@
                                 <div class="span12 well well-small">
                                     <div class="row-fluid">
                                         <div class="span6">
-                                            <labe>View Cube:</labe>
+                                            <labe>Select Cube:</labe>
                                             <select id="cubeSelect"></select>
                                         </div>
                                         <div class="span6">
-                                            <labe>View Measure:</labe>
+                                            <labe>Select Measure:</labe>
                                             <select id="measureSelect"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12 well well-small">
+                                        <div id="graph">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

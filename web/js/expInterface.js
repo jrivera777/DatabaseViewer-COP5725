@@ -2,6 +2,7 @@ var dbCubes;
 var defltCube = "<option>Select Cube...</option>";
 var defltMeasure = "<option>Select Measure...</option>";
 
+
 //Load cubeSelect
 $("document").ready(function(){
     $('#cubeSelect').append(defltCube);
@@ -24,7 +25,12 @@ $("document").ready(function(){
         $('#measureSelect').append(defltMeasure);
         if(selectedIndex > 0)
         {
-            alert("test");
+            var cube = $(this).val();
+            var measures = getMeasuresFromCube(cube);
+            $.each(measures, function(i, item){
+                var measureName = "<option>"  + item.label + "</option>";
+                $('#measureSelect').append(measureName);
+            });
         }
     });
 });
@@ -33,6 +39,14 @@ $("document").ready(function(){
 //get cube measures from cube name
 function getMeasuresFromCube(name)
 {
-    var measures = dbCubes.children[1];
-    //$.each()
+    var measures = [];
+    $.each(dbCubes.children, function (i ,item){
+        if(item.label == name)
+        {
+            $.each(item.children[1].children, function(i, meas) {
+                measures.push(meas);
+            });
+        }
+    });
+    return measures;
 }
