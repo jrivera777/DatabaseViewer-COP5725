@@ -130,6 +130,13 @@
                                     </div>
                                 </div>
                                 <div class="row-fluid">
+                                    <div class="span10 offset1 well well-small">
+                                        <div id="dimensionTable">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
                                     <div class="span12 well well-small">
                                         <div id="graph">
                                         </div>
@@ -137,7 +144,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

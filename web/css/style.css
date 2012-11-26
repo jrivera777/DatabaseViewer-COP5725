@@ -48,7 +48,7 @@ body
 
 }
 @media (max-width: 740px) {
-    .span4{
+    .span4,.span6{
         width: 100% !important;
     }
 }
