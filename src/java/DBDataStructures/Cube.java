@@ -9,6 +9,7 @@ public class Cube
     private String table;
     private ArrayList<Dimension> dimensions;
     private ArrayList<Measure> measures;
+    public int id;
 
     public ArrayList<Dimension> getDimensions()
     {

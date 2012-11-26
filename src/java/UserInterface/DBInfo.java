@@ -4,7 +4,10 @@
  */
 package UserInterface;
 
+import DBDataStructures.Cube;
 import DBDataStructures.DBTable;
+import DBDataStructures.Dimension;
+import DBDataStructures.Measure;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,6 +47,9 @@ public class DBInfo extends HttpServlet
                         + dbAddr + "/" + dbName + "?user=" + dbUser
                         + "&password=" + dbPW;
 
+                //String cop5725Connect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
+                String cop5725Connect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
+
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(userConnect);
 
@@ -69,12 +75,26 @@ public class DBInfo extends HttpServlet
                         viewsRoot.addChild(child);
                 }
 
+                //load tables and views with appropriate data
                 loadData(tablesRoot, conn, dbName);
                 loadData(viewsRoot, conn, dbName);
 
+                //close connection to given database
+                conn.close();
+
+                //load up cubes from our database
+                conn = DriverManager.getConnection(cop5725Connect);
+                ArrayList<Cube> cubes = getCubes(conn, dbName);
+
+                //build treedata with all cubes information
+                TreeData cubesRoot = new TreeData("Cubes","");
+                for(Cube c : cubes)
+                    cubesRoot.addChild(buildCubeTreeData(c));
+                
                 TreeData dbRoot = new TreeData("Data Source - " + dbName, "");
                 dbRoot.addChild(tablesRoot);
                 dbRoot.addChild(viewsRoot);
+                dbRoot.addChild(cubesRoot);
                 tree.add(dbRoot);
                 String json = new Gson().toJson(tree);
                 out.write(json);
@@ -87,7 +107,7 @@ public class DBInfo extends HttpServlet
             catch(ClassNotFoundException ex)
             {
                 System.out.println(ex.getMessage());
-                ex.printStackTrace();;
+                ex.printStackTrace();
             }
             catch(Exception ex)
             {
@@ -178,5 +198,100 @@ public class DBInfo extends HttpServlet
                 td.addChild(col);
             }
         }
+    }
+
+    private ArrayList<Cube> getCubes(Connection conn, String dbName) throws SQLException
+    {
+        ArrayList<Cube> cubes = new ArrayList<Cube>();
+        java.sql.PreparedStatement statement = conn.prepareStatement("SELECT * FROM cube where dbname=?");
+        statement.setString(1, dbName);
+
+        ResultSet rs = statement.executeQuery();
+        int cubeID = -1;
+        //get cube info
+        while(rs.next())
+        {
+            cubeID = rs.getInt(1);
+            if(cubeID < 0)
+                throw new SQLException("Failed to retrieve cube!");
+
+            Cube cube = new Cube();
+            cube.id = cubeID;
+            cube.setDbName(dbName);
+            cube.setName(rs.getString(2));
+            cube.setTable(rs.getString(4));
+
+            cubes.add(cube);
+        }
+
+        //get all cube data
+        statement = conn.prepareStatement("SELECT iddimension, name FROM dimension where cube_idcube=?");
+        for(int i = 0; i < cubes.size(); i++)
+        {
+            statement.clearParameters();
+            statement.setInt(1, cubes.get(i).id);
+
+            rs = statement.executeQuery();
+            int dimeID = -1;
+            ArrayList<Dimension> dimensions = new ArrayList<Dimension>();
+            while(rs.next())
+            {
+                dimeID = rs.getInt(1);
+                if(dimeID < 0)
+                    throw new SQLException("Failed to retrieve dimension!");
+                Dimension dime = new Dimension();
+                dime.id = dimeID;
+                dime.setName(rs.getString(2));
+
+                ArrayList<String> granules = new ArrayList<String>();
+                java.sql.PreparedStatement grans = conn.prepareStatement("SELECT name from granularity where dimension_iddimension=?");
+                grans.setInt(1, dime.id);
+                ResultSet dimeGrans = grans.executeQuery();
+                while(dimeGrans.next())
+                    granules.add(dimeGrans.getString(1));
+                dime.setGranules(granules);
+                dimensions.add(dime);
+            }
+            cubes.get(i).setDimensions(dimensions);
+
+            ArrayList<Measure> measures = new ArrayList<Measure>();
+            java.sql.PreparedStatement getMeasures = conn.prepareStatement("SELECT type, columnname from measure where cube_idcube=?");
+            getMeasures.setInt(1, cubes.get(i).id);
+            ResultSet cubeMs = getMeasures.executeQuery();
+            while(cubeMs.next())
+            {
+                Measure m = new Measure();
+                m.setType(cubeMs.getString(1));
+                m.setColumnName(cubeMs.getString(2));
+                measures.add(m);
+            }
+            cubes.get(i).setMeasures(measures);
+        }
+
+        return cubes;
+    }
+
+    private TreeData buildCubeTreeData(Cube c)
+    {
+        TreeData child = new TreeData(c.getName(), "");
+        
+        TreeData dimeRoot = new TreeData("Dimensions","");
+        TreeData msRoot = new TreeData("Measures","");
+        for(Dimension d : c.getDimensions())
+        {
+            TreeData dChild = new TreeData(d.getName(), "");
+            dimeRoot.addChild(dChild);
+        }
+        for(Measure m : c.getMeasures())
+        {
+            String tmp = m.getType() + "(" + m.getColumnName() + ")";
+            TreeData mChild = new TreeData(tmp,"");
+            msRoot.addChild(mChild);
+        }
+
+        child.addChild(dimeRoot);
+        child.addChild(msRoot);
+        
+        return child;
     }
 }

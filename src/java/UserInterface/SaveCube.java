@@ -93,8 +93,8 @@ public class SaveCube extends HttpServlet
 
             System.out.println(newCube.toString());
 
-            //String userConnect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
-            String userConnect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
+            String userConnect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
+            //String userConnect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
             try
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();

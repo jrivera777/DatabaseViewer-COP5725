@@ -6,7 +6,8 @@ public class Dimension
 {
     private String name;
     private ArrayList<String> granules;
-
+    public int id;
+    
     public String getName()
     {
         return name;
