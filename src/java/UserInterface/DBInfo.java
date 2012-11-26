@@ -47,8 +47,8 @@ public class DBInfo extends HttpServlet
                         + dbAddr + "/" + dbName + "?user=" + dbUser
                         + "&password=" + dbPW;
 
-                //String cop5725Connect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
-                String cop5725Connect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
+                String cop5725Connect = "jdbc:mysql://localhost/cop5725?user=test&password=test";
+                //String cop5725Connect = "jdbc:mysql://172.23.19.231:8080/cop5725?user=root&password=control";
 
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 conn = DriverManager.getConnection(userConnect);
@@ -194,7 +194,7 @@ public class DBInfo extends HttpServlet
                 String colName = cols.getString(1);
                 String dType = cols.getString(2);
 
-                TreeData col = new TreeData(colName, dType);
+                TreeData col = new TreeData(colName.toUpperCase(), dType.toUpperCase());
                 td.addChild(col);
             }
         }
@@ -279,13 +279,13 @@ public class DBInfo extends HttpServlet
         TreeData msRoot = new TreeData("Measures", "");
         for(Dimension d : c.getDimensions())
         {
-            TreeData dChild = new TreeData(d.getName(), "");
+            TreeData dChild = new TreeData(d.getName().toUpperCase(), "ALL");
             dimeRoot.addChild(dChild);
             TreeData gChild = null;
             TreeData tmp = null;
             for(String g : d.getGranules())
             {
-                TreeData granule = new TreeData(g, "");
+                TreeData granule = new TreeData(g.toUpperCase(), "");
                 if(tmp == null)
                     gChild = tmp = granule;
                 else
@@ -299,7 +299,7 @@ public class DBInfo extends HttpServlet
         for(Measure m : c.getMeasures())
         {
             String tmp = m.getType() + "(" + m.getColumnName() + ")";
-            TreeData mChild = new TreeData(tmp, "");
+            TreeData mChild = new TreeData(tmp.toUpperCase(), "");
             msRoot.addChild(mChild);
         }
 

@@ -19,6 +19,7 @@
         <script src="js/bootstrap.js"></script>
         <script src="js/tree.jquery.js"></script>
         <script src="js/mInterface.js"></script>
+        <script src="js/expInterface.js"></script>
     </head>
     <body>
         <div class="container-fluid">
@@ -115,6 +116,20 @@
                             </div>
                         </div>
                         <div id="explore">
+                            <div class="row-fluid">
+                                <div class="span12 well well-small">
+                                    <div class="row-fluid">
+                                        <div class="span6">
+                                            <labe>View Cube:</labe>
+                                            <select id="cubeSelect"></select>
+                                        </div>
+                                        <div class="span6">
+                                            <labe>View Measure:</labe>
+                                            <select id="measureSelect"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
