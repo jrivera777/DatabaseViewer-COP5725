@@ -87,10 +87,10 @@ public class DBInfo extends HttpServlet
                 ArrayList<Cube> cubes = getCubes(conn, dbName);
 
                 //build treedata with all cubes information
-                TreeData cubesRoot = new TreeData("Cubes","");
+                TreeData cubesRoot = new TreeData("Cubes", "");
                 for(Cube c : cubes)
                     cubesRoot.addChild(buildCubeTreeData(c));
-                
+
                 TreeData dbRoot = new TreeData("Data Source - " + dbName, "");
                 dbRoot.addChild(tablesRoot);
                 dbRoot.addChild(viewsRoot);
@@ -274,24 +274,38 @@ public class DBInfo extends HttpServlet
     private TreeData buildCubeTreeData(Cube c)
     {
         TreeData child = new TreeData(c.getName(), "");
-        
-        TreeData dimeRoot = new TreeData("Dimensions","");
-        TreeData msRoot = new TreeData("Measures","");
+
+        TreeData dimeRoot = new TreeData("Dimensions", "");
+        TreeData msRoot = new TreeData("Measures", "");
         for(Dimension d : c.getDimensions())
         {
             TreeData dChild = new TreeData(d.getName(), "");
             dimeRoot.addChild(dChild);
+            TreeData gChild = null;
+            TreeData tmp = null;
+            for(String g : d.getGranules())
+            {
+                TreeData granule = new TreeData(g, "");
+                if(tmp == null)
+                    gChild = tmp = granule;
+                else
+                {
+                    tmp.addChild(granule);
+                    tmp = gChild.getChildren().get(0);
+                }
+            }
+            dChild.addChild(gChild);
         }
         for(Measure m : c.getMeasures())
         {
             String tmp = m.getType() + "(" + m.getColumnName() + ")";
-            TreeData mChild = new TreeData(tmp,"");
+            TreeData mChild = new TreeData(tmp, "");
             msRoot.addChild(mChild);
         }
 
         child.addChild(dimeRoot);
         child.addChild(msRoot);
-        
+
         return child;
     }
 }
