@@ -35,9 +35,17 @@ $("document").ready(function(){
     });
 });
 
+function getCubeByName(name)
+{
+    $.each(dbCubes.children, function (i ,item){
+        if(item.label == name)
+            return item;
+    });
+    return null;
+}
 
 //get cube measures from cube name
-function getMeasuresFromCube(name)
+function getMeasuresFromCube(cube)
 {
     var measures = [];
     $.each(dbCubes.children, function (i ,item){

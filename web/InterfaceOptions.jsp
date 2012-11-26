@@ -131,9 +131,9 @@
                                 </div>
                                 <div class="row-fluid">
                                     <div class="span10 offset1 well well-small">
-                                        <div id="dimensionTable">
+                                        <table id="dimensionTable">
                                             
-                                        </div>
+                                        </table>
                                     </div>
                                 </div>
                                 <div class="row-fluid">
