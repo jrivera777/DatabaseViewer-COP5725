@@ -13,6 +13,7 @@
         <link href="css/bootstrap.css" type="text/css" rel="stylesheet"></link>
         <link href="css/style.css" type="text/css" rel="stylesheet"></link>
         <link href="css/jqtree.css" type="text/css" rel="stylesheet"></link>
+        <link href="css/jquery.treeTable.css" type="text/css" rel="stylesheet"></link>
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
         <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
         <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
@@ -20,6 +21,7 @@
         <script src="js/tree.jquery.js"></script>
         <script src="js/mInterface.js"></script>
         <script src="js/expInterface.js"></script>
+        <script src="js/jquery.treeTable.js"></script>
     </head>
     <body>
         <div class="container-fluid">
@@ -130,10 +132,33 @@
                                     </div>
                                 </div>
                                 <div class="row-fluid">
-                                    <div class="span10 offset1 well well-small">
-                                        <table id="dimensionTable">
-                                            
-                                        </table>
+                                    <div class="span12 well">
+                                        <div class="row-fluid">
+                                            <div id="dimensionCollection" class="span12">
+<!--                                                <table id="dimensionTable" class="table table-striped table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Dimension</th>
+                                                            <th>Measure</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="node-1">
+                                                            <td>Parent</td>
+                                                            <td> test column</td>
+                                                        </tr>
+                                                        <tr id="node-2" class="child-of-node-1">
+                                                            <td>Child</td>
+                                                            <td> test column</td>
+                                                        </tr>
+                                                        <tr id="node-3" class="child-of-node-2">
+                                                            <td>Child</td>
+                                                            <td> test column</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>-->
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row-fluid">

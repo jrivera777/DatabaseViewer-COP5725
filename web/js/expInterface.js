@@ -23,10 +23,11 @@ $("document").ready(function(){
         var selectedIndex = $(this).prop('selectedIndex');
         $('#measureSelect').empty();
         $('#measureSelect').append(defltMeasure);
+        $('#dimensionCollection').empty();
         if(selectedIndex > 0)
         {
             var cube = $(this).val();
-            var measures = getMeasuresFromCube(cube);
+            var measures = getMeasuresFromCube(getCubeByName(cube));
             $.each(measures, function(i, item){
                 var measureName = "<option>"  + item.label + "</option>";
                 $('#measureSelect').append(measureName);
@@ -35,26 +36,50 @@ $("document").ready(function(){
     });
 });
 
+//load dimension tables on measure change
+$("document").ready(function(){
+    $('#measureSelect').change(function(){
+        var selectedIndex = $(this).prop('selectedIndex');
+        var cName = $('#cubeSelect').val();
+        $('#dimensionCollection').empty();
+        if(selectedIndex > 0)
+        {
+            $.ajax({
+                url:"ExploreCube",
+                data:
+                {
+                    cubeName: cName
+                },
+                success: function()
+                {
+                }
+            });
+        }
+    });
+});
+
+//get cube data based on name given
 function getCubeByName(name)
 {
+    var cube;
     $.each(dbCubes.children, function (i ,item){
         if(item.label == name)
-            return item;
+            cube = item;
     });
-    return null;
+    return cube;
 }
 
 //get cube measures from cube name
 function getMeasuresFromCube(cube)
 {
     var measures = [];
-    $.each(dbCubes.children, function (i ,item){
-        if(item.label == name)
-        {
-            $.each(item.children[1].children, function(i, meas) {
-                measures.push(meas);
-            });
-        }
+    $.each(cube.children[1].children, function(i, meas) {
+        measures.push(meas);
     });
     return measures;
 }
+
+//set up dimension table
+$("document").ready(function()  {
+    $("#dimensionTable").treeTable();
+});

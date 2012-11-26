@@ -20,6 +20,10 @@
         <servlet-name>SaveCube</servlet-name>
         <servlet-class>UserInterface.SaveCube</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExploreCube</servlet-name>
+        <servlet-class>UserInterface.ExploreCube</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLogin</servlet-name>
         <url-pattern>/UserLogin</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>SaveCube</servlet-name>
         <url-pattern>/SaveCube</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExploreCube</servlet-name>
+        <url-pattern>/ExploreCube</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
