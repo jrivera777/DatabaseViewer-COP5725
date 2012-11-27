@@ -40,7 +40,9 @@ $("document").ready(function(){
 $("document").ready(function(){
     $('#measureSelect').change(function(){
         var selectedIndex = $(this).prop('selectedIndex');
+        var selectedMeasure = $(this).val();
         var cName = $('#cubeSelect').val();
+        
         $('#dimensionCollection').empty();
         if(selectedIndex > 0)
         {
@@ -50,8 +52,24 @@ $("document").ready(function(){
                 {
                     cubeName: cName
                 },
-                success: function()
+                success: function(data)
                 {
+                    var measure = null;
+                    $.each(data.measures, function(i, meas){
+                        if(selectedMeasure.indexOf(meas.type) >= 0
+                            && selectedMeasure.indexOf(meas.columnName.toUpperCase()) >= 0)
+                            measure = meas;
+                    });
+
+                    $.each(data.dimensions, function(i, dime){
+                        alert(dime.name);
+                        var row = buildRow(dime, measure);
+                        $('#dimensionCollection').append(row);
+                    });
+                },
+                error: function(xhr)
+                {
+                    alert(xhr.statusText);
                 }
             });
         }
@@ -79,7 +97,15 @@ function getMeasuresFromCube(cube)
     return measures;
 }
 
-//set up dimension table
-$("document").ready(function()  {
-    $("#dimensionTable").treeTable();
-});
+//build row from dimension and measure
+function buildRow(dimension, measure)
+{
+    var row = [];
+
+    return row.join("");
+}
+
+////set up dimension table
+//$("document").ready(function()  {
+//    $("#dimensionTable").treeTable();
+//});

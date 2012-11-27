@@ -97,6 +97,7 @@ public class DBInfo extends HttpServlet
                 dbRoot.addChild(cubesRoot);
                 tree.add(dbRoot);
                 String json = new Gson().toJson(tree);
+                
                 out.write(json);
             }
             catch(SQLException ex)
