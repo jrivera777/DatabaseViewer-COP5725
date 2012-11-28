@@ -135,28 +135,6 @@
                                     <div class="span12 well">
                                         <div class="row-fluid">
                                             <div id="dimensionCollection" class="span12">
-<!--                                                <table id="dimensionTable" class="table table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Dimension</th>
-                                                            <th>Measure</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr id="node-1">
-                                                            <td>Parent</td>
-                                                            <td> test column</td>
-                                                        </tr>
-                                                        <tr id="node-2" class="child-of-node-1">
-                                                            <td>Child</td>
-                                                            <td> test column</td>
-                                                        </tr>
-                                                        <tr id="node-3" class="child-of-node-2">
-                                                            <td>Child</td>
-                                                            <td> test column</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>-->
                                             </div>
                                         </div>
                                     </div>

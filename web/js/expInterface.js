@@ -50,25 +50,19 @@ $("document").ready(function(){
                 url:"ExploreCube",
                 data:
                 {
-                    cubeName: cName
+                    cubeName: cName,
+                    measure: selectedMeasure
                 },
                 success: function(data)
                 {
-                    var measure = null;
-                    $.each(data.measures, function(i, meas){
-                        if(selectedMeasure.indexOf(meas.type) >= 0
-                            && selectedMeasure.indexOf(meas.columnName.toUpperCase()) >= 0)
-                            measure = meas;
-                    });
-
-                    $.each(data.dimensions, function(i, dime){
-                        alert(dime.name);
-                        var row = buildRow(dime, measure);
-                        $('#dimensionCollection').append(row);
+                    $('#dimensionCollection').append(data);
+                    $.each($('#dimensionCollection table'), function(i, item){
+                        $('#' + item.id).treeTable();
                     });
                 },
                 error: function(xhr)
                 {
+                    alert("WOMP");
                     alert(xhr.statusText);
                 }
             });
@@ -104,8 +98,3 @@ function buildRow(dimension, measure)
 
     return row.join("");
 }
-
-////set up dimension table
-//$("document").ready(function()  {
-//    $("#dimensionTable").treeTable();
-//});

@@ -7,7 +7,6 @@ package UserInterface;
 import DBDataStructures.Cube;
 import DBDataStructures.Dimension;
 import DBDataStructures.Measure;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -33,7 +32,7 @@ public class ExploreCube extends HttpServlet
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
         String dbName = (String) request.getSession().getAttribute("dbname");
@@ -41,6 +40,7 @@ public class ExploreCube extends HttpServlet
         String dbUser = (String) request.getSession().getAttribute("user");
         String dbPW = (String) request.getSession().getAttribute("pw");
         String cubeName = request.getParameter("cubeName");
+        String measure = request.getParameter("measure");
 
         Connection conn = null;
         try
@@ -59,9 +59,26 @@ public class ExploreCube extends HttpServlet
 
                 Cube cube = getCubeByName(cubeName, dbName, conn);
 
-                String jsonCube = new Gson().toJson(cube);
-                System.out.println(jsonCube);
-                out.println(jsonCube);
+                conn.close();
+                conn = DriverManager.getConnection(userConnect);
+
+                StringBuilder table = new StringBuilder();
+                for(Dimension dime : cube.getDimensions())
+                {
+
+                    String header = String.format("<table id=\"%s-table\""
+                            + "class=\"table table-striped table-hover\">"
+                            + "<thead><tr><th>%s</th><th>Measure</th></tr>"
+                            + "</thead>", dime.getName(), dime.getName());
+                    table.append(header);
+                    table.append("<tbody>");
+                    String row = buildRowForDimension(dime, measure, cube.getTable(), conn);
+                    table.append(row);
+                    table.append("</tbody></table>");
+                }
+
+
+                out.println(table.toString());
             }
             catch(SQLException ex)
             {
@@ -209,4 +226,107 @@ public class ExploreCube extends HttpServlet
     {
         return "Short description";
     }// </editor-fold>
+
+    private String buildRowForDimension(Dimension dime, String measure, String table, Connection conn)
+    {
+        StringBuilder sb = new StringBuilder();
+        String rowStart = "<tr id=\"node-%s\">";
+        String childRow = "<tr id=\"node-%s\" class=\"child-of-node-%s\">";
+        try
+        {
+            sb.append(String.format(rowStart, dime.getName()));
+            java.sql.PreparedStatement statement = conn.prepareStatement(String.format("SELECT %s FROM %s;", measure, table));
+            ResultSet rs = statement.executeQuery();
+
+            double mesResult = -1;
+            while(rs.next())
+                mesResult = rs.getDouble(1);
+            sb.append(String.format("<td>ALL</td><td>%.1f</td>", mesResult));
+            sb.append("</tr>");
+            statement.close();
+
+            ArrayList<String> parenAns = new ArrayList<String>();
+
+            String magic = solveQuery(conn, measure, table, dime.getName(), 0, dime.getGranules(), parenAns);
+            sb.append(magic);
+
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+    public String solveQuery(Connection conn, String measure, String table, String myParent, int currGran, ArrayList<String> grans, ArrayList<String> parentAnswers) throws SQLException
+    {
+        if(currGran >= grans.size())
+            return "";
+
+        String result = "";
+        String childRow = "<tr id=\"node-%s\" class=\"child-of-node-%s\">";
+        String query = "SELECT %s, %s FROM %s";
+
+        for(int i = 0; i < currGran; i++)
+        {
+            if(i == 0)
+                query += " WHERE ";
+            else
+                query += " and ";
+
+
+            Class<?> type = null;
+            try
+            {
+                Integer.parseInt(parentAnswers.get(i));
+                type = int.class;
+            }
+            catch(NumberFormatException ex)
+            {
+                try
+                {
+                    Double.parseDouble(parentAnswers.get(i));
+                    type = double.class;
+                }
+                catch(NumberFormatException dblEx)
+                {
+                    type = String.class;
+                }
+            }
+            if(type == int.class)
+                query += String.format(" %s = %d", grans.get(i), Integer.parseInt(parentAnswers.get(i)));
+            else if(type == double.class)
+                query += String.format(" %s = %f", grans.get(i), Double.parseDouble(parentAnswers.get(i)));
+            else
+                query += String.format(" %s = \'%s\'", grans.get(i), parentAnswers.get(i));
+        }
+
+        query += " GROUP BY %s;";
+
+        String granule = grans.get(currGran);
+        query = String.format(query, granule, measure, table, granule);
+        System.out.println(query);
+        java.sql.PreparedStatement statement = conn.prepareStatement(query);
+        ResultSet rs = statement.executeQuery();
+
+
+        int uniqueCounter = 0;
+        while(rs.next())
+        {
+            StringBuilder sb = new StringBuilder();
+            ++uniqueCounter;
+            String granResult = rs.getString(1);
+            double mRes = rs.getDouble(2);
+            sb.append(String.format(childRow, granule + uniqueCounter, myParent));
+            sb.append(String.format("<td>%s=%s</td><td>%.1f</td>", granule.toUpperCase(), granResult, mRes));
+            sb.append("</tr>");
+            parentAnswers.add(granResult);
+            String tmp = sb.toString() + solveQuery(conn, measure, table, granule + uniqueCounter, ++currGran, grans, parentAnswers);
+            System.out.println(tmp);
+            result += tmp;
+            currGran--;
+            parentAnswers.remove(parentAnswers.size() - 1);
+        }
+        return result;
+    }
 }
