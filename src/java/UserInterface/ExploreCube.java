@@ -67,7 +67,7 @@ public class ExploreCube extends HttpServlet
                 {
 
                     String header = String.format("<table id=\"%s-table\""
-                            + "class=\"table table-striped table-hover\">"
+                            + "class=\"table table-striped table-hover\" \"table-container\">"
                             + "<thead><tr><th>%s</th><th>Measure</th></tr>"
                             + "</thead>", dime.getName(), dime.getName());
                     table.append(header);
@@ -121,7 +121,7 @@ public class ExploreCube extends HttpServlet
         }
     }
 
-    private Cube getCubeByName(String cubeName, String dbName, Connection conn) throws SQLException
+    public static Cube getCubeByName(String cubeName, String dbName, Connection conn) throws SQLException
     {
         Cube cube = null;
         java.sql.PreparedStatement statement = conn.prepareStatement("SELECT * FROM cube where dbname=? and name=?");
@@ -254,11 +254,13 @@ public class ExploreCube extends HttpServlet
         catch(SQLException ex)
         {
             ex.printStackTrace();
+            return String.format(ERROR_MESSAGE, "Something went wrong while exploring your cube. Sorry!!");
         }
         return sb.toString();
     }
 
-    public String solveQuery(Connection conn, String measure, String table, String myParent, int currGran, ArrayList<String> grans, ArrayList<String> parentAnswers) throws SQLException
+    private static int uniqueCounter = 0;
+    private String solveQuery(Connection conn, String measure, String table, String myParent, int currGran, ArrayList<String> grans, ArrayList<String> parentAnswers) throws SQLException
     {
         if(currGran >= grans.size())
             return "";
@@ -310,7 +312,7 @@ public class ExploreCube extends HttpServlet
         ResultSet rs = statement.executeQuery();
 
 
-        int uniqueCounter = 0;
+        
         while(rs.next())
         {
             StringBuilder sb = new StringBuilder();
@@ -322,7 +324,6 @@ public class ExploreCube extends HttpServlet
             sb.append("</tr>");
             parentAnswers.add(granResult);
             String tmp = sb.toString() + solveQuery(conn, measure, table, granule + uniqueCounter, ++currGran, grans, parentAnswers);
-            System.out.println(tmp);
             result += tmp;
             currGran--;
             parentAnswers.remove(parentAnswers.size() - 1);

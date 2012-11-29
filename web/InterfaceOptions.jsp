@@ -22,6 +22,7 @@
         <script src="js/mInterface.js"></script>
         <script src="js/expInterface.js"></script>
         <script src="js/jquery.treeTable.js"></script>
+        <script src="js/highcharts.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="container-fluid">
@@ -141,7 +142,7 @@
                                 </div>
                                 <div class="row-fluid">
                                     <div class="span12 well well-small">
-                                        <div id="graph">
+                                        <div id="graphCollection" style="width: 95%;">
                                         </div>
                                     </div>
                                 </div>
