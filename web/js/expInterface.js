@@ -87,7 +87,7 @@ $("document").ready(function(){
                                                 var y = [];
                                                 for(var i = 0; i < results[0].length; i++)
                                                 {
-                                                    y.push(parseInt(results[1][i]));
+                                                    y.push(parseFloat(results[1][i]));
                                                 }
                                                 var chart = new Highcharts.Chart({
                                                     chart: {

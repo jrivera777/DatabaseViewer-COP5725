@@ -133,7 +133,7 @@ $("document").ready(function() {
                     next();
                 });
                 if(succ.indexOf("success") > 0)
-                    $('#clearCube').click();
+                    parent.location.reload();
             }
         });
         btn.button('reset');
