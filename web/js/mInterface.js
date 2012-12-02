@@ -17,10 +17,13 @@ $("document").ready(function(){
         dbData = data[0];
         var tables = dbData.children
         $.each(tables, function(i, vals){
-            $.each(vals.children, function(i, item){
-                var tableName = "<option>" + item.label + "</option>";
-                $('#tableSelect').append(tableName);
-            });
+            if(vals.label != 'Cubes')
+            {
+                $.each(vals.children, function(i, item){
+                    var tableName = "<option>" + item.label + "</option>";
+                    $('#tableSelect').append(tableName);
+                });
+            }
         });
     });
 });
